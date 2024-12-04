@@ -2,7 +2,6 @@ package credentialissuance
 
 
 import com.affinidi.tdk.authprovider.AuthProvider
-import org.springframework.core.ParameterizedTypeReference
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException
@@ -24,7 +23,7 @@ class IssuanceService() {
             .baseUrl(dotenv["API_GATEWAY_URL"])
             .defaultHeader("Content-Type", "application/json")
             .defaultHeader("Accept", "application/json")
-            .build();
+            .build()
 
 
 
