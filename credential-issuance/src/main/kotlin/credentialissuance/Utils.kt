@@ -1,17 +1,18 @@
 package credentialissuance
 
-import com.affinidi.tdk.authprovider.*
+import com.affinidi.tdk.authprovider.AuthProvider
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import reactor.core.publisher.Mono
+import io.github.cdimascio.dotenv.Dotenv
 
 @Service
 class Utils() {
-    dotenv.load();
 
-    val provider = com.affinidi.tdk.authprovider.AuthProvider()
+    private val dotenv: Dotenv = Dotenv.load()
+
 
     private val webClient =
         WebClient.builder()

@@ -28,15 +28,9 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-//    runtimeOnly(
-//        files(
-//            "src/lib/auth-provider/1.29.0/auth-provider-1.29.0.jar",
-//            "src/lib/auth-provider/1.29.0/auth-provider-1.29.0.jar"
-//        )
-//    )
-//    runtimeOnly(fileTree("src/main/lib") { include("**/*.jar") })
-    runtimeOnly(files("src/main/lib/auth-provider/1.29.0/auth-provider-1.29.0.jar"))
-    implementation("io.github.cdimascio:dotenv-kotlin:6.0.0")
+    implementation(files("src/main/lib/auth-provider/1.29.0/auth-provider-1.29.0.jar"))
+    implementation("software.amazon.jsii:jsii-runtime:1.68.0")
+    implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
     implementation("io.projectreactor:reactor-core:3.7.0")
 }
 
