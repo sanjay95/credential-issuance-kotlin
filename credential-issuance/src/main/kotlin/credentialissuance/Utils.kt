@@ -19,20 +19,16 @@ class IssuanceService() {
 
     private val dotenv: Dotenv = Dotenv.load()
 
-
-
     private val webClient =
         WebClient.builder()
-            .baseUrl(System.getenv("API_GATEWAY_URL"))
+            .baseUrl(dotenv["API_GATEWAY_URL"])
             .defaultHeader("Content-Type", "application/json")
             .defaultHeader("Accept", "application/json")
             .build();
 
 
 
-    fun startIssuance(userDID: String): Mono<Map<String, Any>> {
-
-
+    fun startIssuance(userDID: String): Mono<StartIssuanceResponse> {
         val apiEndpoint = String.format("/cis/v1/%s/issuance/start", dotenv["PROJECT_ID"]!!)
 
         val user = mutableMapOf<String, Any>()
@@ -68,9 +64,10 @@ class IssuanceService() {
         val headers = mapOf("Authorization" to "Bearer $projectScopedToken")
 
         val response = sendPostRequest(apiEndpoint, headers, requestBody)
-        val jsonResponse=Json.encodeToString(response);
-        println("Request Successful, response:  $jsonResponse")
-//        println("Request Successful, response: $response.credentialOfferUri")
+        response.subscribe { jsonResponse ->
+            val jsonString = Json.encodeToString(jsonResponse)
+            logger.info("Request Successful, response: $jsonString")
+        }
 
         return response
     }
@@ -79,7 +76,9 @@ class IssuanceService() {
         apiEndpoint: String,
         headers: Map<String, String>,
         requestBody: Any
-    ): Mono<Map<String, Any>> {
+    ): Mono<StartIssuanceResponse> {
+        logger.info("apiEndpoint  apiEndpoint : $apiEndpoint")
+
         return webClient.post()
             .uri(apiEndpoint)
             .headers {
@@ -89,18 +88,16 @@ class IssuanceService() {
             }
             .bodyValue(requestBody)
             .retrieve()
-            .bodyToMono(object : ParameterizedTypeReference<Map<String, Any>>() {})
+            .bodyToMono(StartIssuanceResponse::class.java)
             .onErrorResume(WebClientResponseException::class.java) { e ->
                 System.err.println("WebClientResponseException: ${e.responseBodyAsString}")
                 Mono.empty() // Or handle error as needed
             }
     }
 
-
     private fun getAuthProvider(): AuthProvider {
         val params = mutableMapOf<String, String>()
-        val id=dotenv["PROJECT_ID"]!!;
-        logger.info("Received projectId in utils: $id")
+
         params["projectId"] = dotenv["PROJECT_ID"]!!
 
         params["tokenId"] = dotenv["TOKEN_ID"]!!

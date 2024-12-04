@@ -17,9 +17,9 @@ class IssuanceController(private val service: IssuanceService) {
     private val logger: Logger = LoggerFactory.getLogger(IssuanceController::class.java)
 
     @PostMapping
-    fun post(@RequestBody userDID: UserDID): ResponseEntity<Any> {
+    fun post(@RequestBody userDID: UserDID): ResponseEntity<StartIssuanceResponse> {
         logger.info("Received userDID: ${userDID.userDID}")
-        val savedMessage = service.startIssuance(userDID.userDID)
+        val savedMessage = service.startIssuance(userDID.userDID).block()
 
         // Return the saved message as is
         return ResponseEntity.ok(savedMessage)
