@@ -1,5 +1,6 @@
 package credentialissuance
 
+
 import com.affinidi.tdk.authprovider.AuthProvider
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.stereotype.Service
@@ -7,11 +8,17 @@ import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import reactor.core.publisher.Mono
 import io.github.cdimascio.dotenv.Dotenv
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
 
 @Service
-class Utils() {
+class IssuanceService() {
+    private val logger: Logger = LoggerFactory.getLogger(IssuanceController::class.java)
 
     private val dotenv: Dotenv = Dotenv.load()
+
 
 
     private val webClient =
@@ -22,40 +29,11 @@ class Utils() {
             .build();
 
 
-    private fun getAuthProvider(): AuthProvider {
-        val params = mutableMapOf<String, String>()
-        params["projectId"] = System.getenv("PROJECT_ID")!!
-        params["tokenId"] = System.getenv("TOKEN_ID")!!
-        params["keyId"] = System.getenv("KEY_ID")!!
-        params["privateKey"] = System.getenv("PRIVATE_KEY")!!.replace("\\n", System.lineSeparator())
-        params["passphrase"] = System.getenv("PASSPHRASE")!!
-
-        return AuthProvider(params)
-    }
-
-    fun generatePST(): String {
-        val authProvider = getAuthProvider()
-        val projectScopedToken = authProvider.fetchProjectScopedToken()
-        println("Project Scoped Token: $projectScopedToken")
-        return projectScopedToken
-    }
-
-    fun getIotaJWT(userDID: String): String {
-        val authProvider = getAuthProvider()
-        val iotaConfigId = System.getenv("IOTA_CONFIG_ID")!!
-
-        val tokenOutput = authProvider.createIotaToken(iotaConfigId, userDID)
-        val jwt = tokenOutput.iotaJwt
-        val sessionId = tokenOutput.iotaSessionId
-
-        println("Iota JWT: $jwt")
-        println("Iota sessionId: $sessionId")
-
-        return jwt
-    }
 
     fun startIssuance(userDID: String): Mono<Map<String, Any>> {
-        val apiEndpoint = String.format("/cis/v1/%s/issuance/start", System.getenv("PROJECT_ID")!!)
+
+
+        val apiEndpoint = String.format("/cis/v1/%s/issuance/start", dotenv["PROJECT_ID"]!!)
 
         val user = mutableMapOf<String, Any>()
         user["name"] = "John"
@@ -68,59 +46,7 @@ class Utils() {
             "city" to "New York",
             "zip" to "10001"
         )
-
         val vitals = mutableMapOf<String, Any>()
-        vitals["height"] = "180"
-        vitals["weight"] = "75"
-        vitals["bloodType"] = "A+"
-        vitals["conditions"] = "asthma ,diabetes"
-        vitals["lastCheckup"] = "2019-01-01"
-        vitals["nextCheckup"] = "2020-01-01"
-        vitals["insurance"] = mapOf(
-            "provider" to "Blue Cross",
-            "policyNumber" to "1234567890"
-        )
-        vitals["bloodPressure"] = mapOf(
-            "systolic" to "120",
-            "diastolic" to "80"
-        )
-        vitals["heartRate"] = mapOf(
-            "rhythm" to "normal",
-            "restingHr" to "60",
-            "maxHr" to "90",
-            "minHr" to "58",
-            "avgHr" to "70",
-            "duration" to "8 hours"
-        )
-        vitals["temperature"] = 37.0
-        vitals["respiratoryRate"] = 16
-        vitals["oxygenSaturation"] = 98.0
-        vitals["glucose"] = 100.0
-        vitals["cholesterol"] = mapOf(
-            "total" to 200,
-            "hdl" to 50,
-            "ldl" to 150
-        )
-        vitals["electrocardiogram"] = mapOf(
-            "rate" to 75,
-            "rhythm" to "normal",
-            "intervals" to mapOf(
-                "p" to "normal",
-                "qr" to "normal",
-                "qrs" to "normal",
-                "qt" to "normal"
-            ),
-            "axis" to mapOf(
-                "qrs" to "normal",
-                "p" to "normal",
-                "t" to "normal"
-            ),
-            "waveforms" to mapOf(
-                "p" to "normal",
-                "qrs" to "normal",
-                "t" to "normal"
-            )
-        )
 
         val credentialData = mutableMapOf<String, Any>()
         credentialData["user"] = user
@@ -142,8 +68,9 @@ class Utils() {
         val headers = mapOf("Authorization" to "Bearer $projectScopedToken")
 
         val response = sendPostRequest(apiEndpoint, headers, requestBody)
-
-        println("Request Successful, response: $response")
+        val jsonResponse=Json.encodeToString(response);
+        println("Request Successful, response:  $jsonResponse")
+//        println("Request Successful, response: $response.credentialOfferUri")
 
         return response
     }
@@ -168,4 +95,42 @@ class Utils() {
                 Mono.empty() // Or handle error as needed
             }
     }
+
+
+    private fun getAuthProvider(): AuthProvider {
+        val params = mutableMapOf<String, String>()
+        val id=dotenv["PROJECT_ID"]!!;
+        logger.info("Received projectId in utils: $id")
+        params["projectId"] = dotenv["PROJECT_ID"]!!
+
+        params["tokenId"] = dotenv["TOKEN_ID"]!!
+        params["keyId"] = dotenv["KEY_ID"]!!
+        params["privateKey"] = dotenv["PRIVATE_KEY"]!!.replace("\\n", System.lineSeparator())
+        params["passphrase"] = dotenv["PASSPHRASE"]!!
+
+        return AuthProvider(params)
+    }
+
+    fun generatePST(): String {
+        val authProvider = getAuthProvider()
+        val projectScopedToken = authProvider.fetchProjectScopedToken()
+        println("Project Scoped Token: $projectScopedToken")
+        return projectScopedToken
+    }
+
+    fun getIotaJWT(userDID: String): String {
+        val authProvider = getAuthProvider()
+        val iotaConfigId = dotenv["IOTA_CONFIG_ID"]!!
+
+        val tokenOutput = authProvider.createIotaToken(iotaConfigId, userDID)
+        val jwt = tokenOutput.iotaJwt
+        val sessionId = tokenOutput.iotaSessionId
+
+        println("Iota JWT: $jwt")
+        println("Iota sessionId: $sessionId")
+
+        return jwt
+    }
+
 }
+
