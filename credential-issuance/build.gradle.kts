@@ -4,10 +4,11 @@ plugins {
     kotlin("plugin.serialization") version "1.8.0"
     id("org.springframework.boot") version "3.4.0"
     id("io.spring.dependency-management") version "1.1.6"
+    application
 }
 
 group = "com.example"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.1"
 
 java {
     toolchain {
@@ -45,4 +46,8 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+application {
+    mainClass.set("credentialissuance.CredentialIssuanceApplicationKt")
 }
