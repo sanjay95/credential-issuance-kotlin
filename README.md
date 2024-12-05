@@ -99,9 +99,9 @@ For more information, refer to the [Wallets documentation](https://docs.affinidi
 
 Schema 1 : 
 - *Schema* as `Manual Input`, 
-- *Credential Type ID* as `InsuranceRegistration`
-- *JSON Schema URL* as `https://schema.affinidi.io/TtestschemaIsusdfsfsfdV1R0.json`
-- *JSDON-LD Context URL* = `https://schema.affinidi.io/TtestschemaIsusdfsfsfdV1R0.jsonld`
+- *Credential Type ID* as `healthProfile`
+- *JSON Schema URL* as [https://schema.affinidi.io/TtestschemaIsusdfsfsfdV1R0.json](https://schema.affinidi.io/ThealthProfileV1R0.json)
+- *JSDON-LD Context URL* = [https://schema.affinidi.io/TtestschemaIsusdfsfsfdV1R0.jsonld](https://schema.affinidi.io/ThealthProfileV1R0.jsonld)
 
 Sample Configuration
 ![alt text](./docs/cis-image/cis-configuration.png)
