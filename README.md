@@ -25,52 +25,50 @@ export JAVA_HOME="/Library/Java/JavaVirtualMachines/amazon-corretto-21.jdk/Conte
 ## Getting Started
 
 Setting up the reference app is easy with [IntelliJ IDEA](https://www.jetbrains.com/idea/)
-Just open the project credential-issuance from credential-issuance-kotlin/credential-issuance in INtelliJ Idea and you are ready to build and run.
+Just open the project `credential-issuance` from credential-issuance-kotlin/credential-issuance in INtelliJ Idea and you are ready to build and run.
 
 just follow these steps for VS code:
+Open folder `credential-issuance` from credential-issuance-kotlin/credential-issuance in VS code or terminal.
 
-1. Install the dependencies
-```sh
-sh mvnw clean
-sh mvnw install
-```
+1.Update application environment variables 
 
-2. Update application environment variables 
-
-Create a .env file for your application to hold environment variables
+1. Create a .env file for your application to hold environment variables
 
 ```sh
 cp .env.example .env
 ```
 
-3. Click here to [Set up your environment variables for Affinidi Login configuration](#set-up-your-affinidi-login-configuration)
+2. Install the dependencies
 
-4. Click here to [Set up your Personnel Access Token to interact with Affinidi services](#setup-personal-access-token)
+```sh
+./gradlew clean build  
+```
 
-5. Click here to [Set up your Credential Issuance Configuration](#setup-credential-issuance-configuration)
+3. Click here to [Set up your Personnel Access Token to interact with Affinidi services](#setup-personal-access-token)
+
+4. Click here to [Set up your Credential Issuance Configuration](#setup-credential-issuance-configuration)
 
 
 
 ## Build and run the project:
 
 ```sh
-sh mvnw spring-boot:run
+./gradlew clean build 
+java -jar build/libs/credential-issuance-0.0.1-SNAPSHOT.jar
 ```
-Then visit: http://localhost:8080/ to browse the reference app
 
+Then use any REST client to call API(POST): [http://localhost:8080/issuance](http://localhost:8080/issuance) to start issuing the credential
 
+A very simple payload for POST 
 
-## Set up your Affinidi Login configuration
-
-1. Follow [this guide](./docs/setup-login-config.md) to set up your login configuration with callback URL as `http://localhost:8080/login/oauth2/code/javademo`
-
-2. Copy your **Client ID**, **Client Secret** and **Issuer** from your login configuration and paste them into your `.env` file:
-
-```ini
-PROVIDER_CLIENT_ID="<CLIENT_ID>"
-PROVIDER_CLIENT_SECRET="<CLIENT_SECRET>"
-PROVIDER_ISSUER="<ISSUER>"
+```json
+{
+    "userDID": "did:key:zQ3shZ5XvgFEiuLeBofUKk3QzHpEMpcfHYnPKVyDSdkKrkwqX"
+}
 ```
+
+
+
 
 ## Setup Personal Access Token
 
