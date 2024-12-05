@@ -1,12 +1,15 @@
 package credentialissuance
 
+import io.github.cdimascio.dotenv.Dotenv
 import org.springframework.stereotype.Service
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.query
 import java.util.UUID
 
+
 @Service
 class MessageService(private val db: JdbcTemplate) {
+    private val dotenv: Dotenv = Dotenv.load()
 
     fun findMessages(): List<Message> = db.query("select * from messages") { response, _ ->
         Message(response.getString("id"), response.getString("text"))
@@ -23,5 +26,9 @@ class MessageService(private val db: JdbcTemplate) {
             id, message.text
         )
         return message.copy(id = id) // Return a copy of the message with the new id
+    }
+
+    fun findEnv(): String  {
+        return  dotenv["VAULT_URL"];
     }
 }
