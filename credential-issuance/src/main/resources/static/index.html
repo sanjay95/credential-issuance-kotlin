@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoke API and Display Response</title>
+    <script>
+        var vaultUrl = "";
+        window.onload = async function() {
+            const responseDiv = document.getElementById("response");
+
+            try {
+                const response = await fetch('/VAULT_URL', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+
+                vaultUrl = await response.text();
+            } catch (error) {
+                responseDiv.textContent = 'Error: ' + error.message;
+            }
+        }
+        async function invokeApi() {
+            const userDID = document.getElementById("userDID").value;
+            const responseDiv = document.getElementById("response");
+            const dynamicLink = document.getElementById("dynamicLink");
+
+            try {
+                const response = await fetch('/issuance', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userDID: userDID })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+
+                const data = await response.json();
+                responseDiv.textContent = JSON.stringify(data, null, 2);
+                dynamicLink.href = vaultUrl+data.credentialOfferUri;
+                dynamicLink.textContent = "Save to Vault";
+            } catch (error) {
+                responseDiv.textContent = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</head>
+<body>
+<h1>Invoke API and Display Response</h1>
+<label for="userDID">User DID:</label>
+<input type="text" id="userDID" name="userDID">
+<button onclick="invokeApi()">Invoke API</button>
+<h2>Response:</h2>
+<pre id="response"></pre>
+<a id="dynamicLink" href="#" target="_blank"></a>
+
+</body>
+</html>
