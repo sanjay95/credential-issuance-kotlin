@@ -1,7 +1,7 @@
 # Affinidi Crdential Issuance (CIS) using  kotlin 
 
 
-This is a reference app created to demonstarte integration of Affinidi CIS to Kotlin and springboot develoment framework. 
+This is a reference backend app created to demonstarte integration of Affinidi CIS to Kotlin and springboot develoment framework. 
 
 
 ## Prerequisite 
