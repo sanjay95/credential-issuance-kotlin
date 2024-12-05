@@ -54,7 +54,7 @@ cp .env.example .env
 
 ```sh
 ./gradlew clean build 
-java -jar build/libs/credential-issuance-0.0.1-SNAPSHOT.jar
+./gradlew run
 ```
 
 Then use any REST client to call API(POST): [http://localhost:8080/issuance](http://localhost:8080/issuance) to start issuing the credential
@@ -63,7 +63,7 @@ A very simple payload for POST
 
 ```json
 {
-    "userDID": "did:key:zQ3shZ5XvgFEiuLeBofUKk3QzHpEMpcfHYnPKVyDSdkKrkwqX"
+    "userDID": "did:key:<YOUR DID>"
 }
 ```
 
@@ -99,9 +99,9 @@ For more information, refer to the [Wallets documentation](https://docs.affinidi
 
 Schema 1 : 
 - *Schema* as `Manual Input`, 
-- *Credential Type ID* as `InsuranceRegistration`
-- *JSON Schema URL* as `https://schema.affinidi.io/TtestschemaIsusdfsfsfdV1R0.json`
-- *JSDON-LD Context URL* = `https://schema.affinidi.io/TtestschemaIsusdfsfsfdV1R0.jsonld`
+- *Credential Type ID* as `healthProfile`
+- *JSON Schema URL* as [https://schema.affinidi.io/TtestschemaIsusdfsfsfdV1R0.json](https://schema.affinidi.io/ThealthProfileV1R0.json)
+- *JSDON-LD Context URL* = [https://schema.affinidi.io/TtestschemaIsusdfsfsfdV1R0.jsonld](https://schema.affinidi.io/ThealthProfileV1R0.jsonld)
 
 Sample Configuration
 ![alt text](./docs/cis-image/cis-configuration.png)
