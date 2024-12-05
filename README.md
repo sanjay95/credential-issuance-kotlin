@@ -63,7 +63,7 @@ A very simple payload for POST
 
 ```json
 {
-    "userDID": "did:key:zQ3shZ5XvgFEiuLeBofUKk3QzHpEMpcfHYnPKVyDSdkKrkwqX"
+    "userDID": "did:key:<YOUR DID>"
 }
 ```
 
