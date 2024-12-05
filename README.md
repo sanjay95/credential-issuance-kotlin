@@ -54,7 +54,7 @@ cp .env.example .env
 
 ```sh
 ./gradlew clean build 
-java -jar build/libs/credential-issuance-0.0.1-SNAPSHOT.jar
+./gradlew run
 ```
 
 Then use any REST client to call API(POST): [http://localhost:8080/issuance](http://localhost:8080/issuance) to start issuing the credential
