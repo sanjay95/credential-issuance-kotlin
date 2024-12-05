@@ -1,0 +1,27 @@
+{
+  "id": "course_certificate",
+  "input_descriptors": [
+    {
+      "id": "course_certificate",
+      "name": "VC",
+      "purpose": "Check VC",
+      "constraints": {
+        "fields": [
+          {
+            "path": [
+              "$.type"
+            ],
+            "purpose": "VC Type Check",
+            "filter": {
+              "type": "array",
+              "contains": {
+                "type": "string",
+                "pattern": "AnyTcourseCertificate"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

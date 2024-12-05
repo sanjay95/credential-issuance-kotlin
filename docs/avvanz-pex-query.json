@@ -1,0 +1,85 @@
+{
+  "id": "avvanz_certificate",
+  "input_descriptors": [
+    {
+      "id": "address_verification",
+      "name": "VC",
+      "purpose": "Check VC",
+      "constraints": {
+        "fields": [
+          {
+            "path": ["$.type"],
+            "purpose": "VC Type Check",
+            "filter": {
+              "type": "array",
+              "contains": {
+                "type": "string",
+                "pattern": "TAddressVerification"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "personal_information",
+      "name": "VC",
+      "purpose": "Check VC",
+      "constraints": {
+        "fields": [
+          {
+            "path": ["$.type"],
+            "purpose": "VC Type Check",
+            "filter": {
+              "type": "array",
+              "contains": {
+                "type": "string",
+                "pattern": "TPersonalInformationVerification"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "education_information",
+      "name": "VC",
+      "purpose": "Check VC",
+      "constraints": {
+        "fields": [
+          {
+            "path": ["$.type"],
+            "purpose": "VC Type Check",
+            "filter": {
+              "type": "array",
+              "contains": {
+                "type": "string",
+                "pattern": "TEducationVerification"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "employment_information",
+      "name": "VC",
+      "purpose": "Check VC",
+      "constraints": {
+        "fields": [
+          {
+            "path": ["$.type"],
+            "purpose": "VC Type Check",
+            "filter": {
+              "type": "array",
+              "contains": {
+                "type": "string",
+                "pattern": "TEmploymentVerification"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
