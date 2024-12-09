@@ -33,7 +33,7 @@ class IssuanceService() {
         val requestBody = mutableMapOf<String, Any>()
         requestBody["data"] = listOf(
             mapOf(
-                "credentialTypeId" to "AHC Vitals Aggregate",
+                "credentialTypeId" to dotenv["CREDENTIAL_TYPE_ID"],
                 "credentialData" to requestData
             )
         )
