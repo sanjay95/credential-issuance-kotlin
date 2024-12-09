@@ -1,0 +1,441 @@
+{
+    "authorDid": "did:key:zQ3shmB5BLKAgukNpe8e7TA93kuEGBgNjP5X6dDYvd1WyGzgT",
+    "description": "AHC Health Data Aggregate",
+    "scope": "PUBLIC",
+    "namespace": "Any",
+    "type": "AHCVitalAggregate",
+    "version": 1,
+    "revision": 0,
+    "jsonSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$id": "https://schema.affinidi.io/AHCVitalAggregateV1R0.json",
+        "$metadata": {
+            "version": 1,
+            "revision": 0,
+            "discoverable": true,
+            "uris": {
+                "jsonLdContext": "https://schema.affinidi.io/AHCVitalAggregateV1R0.jsonld",
+                "jsonSchema": "https://schema.affinidi.io/AHCVitalAggregateV1R0.json"
+            }
+        },
+        "title": "AHCVitalAggregate",
+        "description": "AHC Health Data Aggregate",
+        "type": "object",
+        "required": [
+            "@context",
+            "type",
+            "issuer",
+            "issuanceDate",
+            "credentialSubject"
+        ],
+        "properties": {
+            "@context": {
+                "type": [
+                    "string",
+                    "array",
+                    "object"
+                ]
+            },
+            "id": {
+                "type": "string",
+                "format": "uri"
+            },
+            "type": {
+                "type": [
+                    "string",
+                    "array"
+                ],
+                "items": {
+                    "type": "string"
+                }
+            },
+            "issuer": {
+                "type": [
+                    "string",
+                    "object"
+                ],
+                "format": "uri",
+                "required": [
+                    "id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uri"
+                    }
+                }
+            },
+            "issuanceDate": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "expirationDate": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "credentialSubject": {
+                "type": "object",
+                "properties": {
+                    "vitalAggregateID": {
+                        "title": "courseID",
+                        "type": "string",
+                        "description": ""
+                    },
+                    "aggregationDate": {
+                        "title": "aggregationDate",
+                        "type": "string"
+                    },
+                    "measurementType": {
+                        "title": "measurementType",
+                        "type": "string"
+                    },
+                    "organizationId": {
+                        "title": "organizationId",
+                        "type": "string"
+                    },
+                    "user": {
+                        "title": "user",
+                        "type": "object",
+                        "description": "",
+                        "properties": {
+                            "userId": {
+                                "title": "userId",
+                                "type": "string"
+                            },
+                            "name": {
+                                "title": "phone",
+                                "type": "string",
+                                "description": ""
+                            },
+                            "gender": {
+                                "title": "gender",
+                                "type": "string"
+                            },
+                            "email": {
+                                "title": "email",
+                                "type": "string",
+                                "description": ""
+                            },
+                            "phone": {
+                                "title": "phone",
+                                "type": "string",
+                                "description": ""
+                            },
+                            "heightInch": {
+                                "title": "heightInch",
+                                "type": "string"
+                            },
+                            "emergencyContacts": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "title": "name",
+                                            "type": "string"
+                                        },
+                                        "phone": {
+                                            "title": "phone",
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "title": "email",
+                                            "type": "string"
+                                        },
+                                        "relation": {
+                                            "title": "relation",
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "currentConditions": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "title": "id",
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "title": "name",
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "title": "description",
+                                    "type": "string"
+                                },
+                                "severity": {
+                                    "title": "severity",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "currBmiValue": {
+                        "title": "currBmiValue",
+                        "type": "number"
+                    },
+                    "weightDailyAvgLbs": {
+                        "title": "weightDailyAvgLbs",
+                        "type": "number"
+                    },
+                    "bpSysUom": {
+                        "title": "bpSysUomId",
+                        "type": "string"
+                    },
+                    "bpDiaUom": {
+                        "title": "bpDiaUomId",
+                        "type": "string"
+                    },
+                    "bpSys1DayTrend": {
+                        "title": "bpSys1DayTrend",
+                        "type": "string"
+                    },
+                    "bpDia1DayTrend": {
+                        "title": "bpDia1DayTrend",
+                        "type": "string"
+                    },
+                    "bpSys1DayAvg": {
+                        "title": "bpSys1DayAvg",
+                        "type": "number"
+                    },
+                    "bpDia1DayAvg": {
+                        "title": "bpDia1DayAvg",
+                        "type": "number"
+                    },
+                    "bpSys7DayAvg": {
+                        "title": "bpSys7DayAvg",
+                        "type": "number"
+                    },
+                    "bpDia7DayAvg": {
+                        "title": "bpDia7DayAvg",
+                        "type": "number"
+                    },
+                    "bpSys30DayAvg": {
+                        "title": "bpSys30DayAvg",
+                        "type": "number"
+                    },
+                    "bpDia30DayAvg": {
+                        " title": "bpDia30DayAvg",
+                        "type": "number"
+                    },
+                    "bpSys90DayAvg": {
+                        "title": "bpSys90DayAvg",
+                        "type": "number"
+                    },
+                    "bpDia90DayAvg": {
+                        "title": "bpDia90DayAvg",
+                        "type": "number"
+                    },
+                    "bpSys180DayAvg": {
+                        "title": "bpSys180DayAvg",
+                        "type": "number"
+                    },
+                    "bpDia180DayAvg": {
+                        "title": "bpDia180DayAvg",
+                        "type": "number"
+                    },
+                    "bpSys360DayAvg": {
+                        "title": "bpSys360DayAvg",
+                        "type": "number"
+                    },
+                    "bpDia360DayAvg": {
+                        "title": "bpDia360DayAvg",
+                        "type": "number"
+                    }
+                },
+                "required": []
+            },
+            "credentialSchema": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "type"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "type": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    },
+    "jsonLdContext": {
+        "@context": {
+            "coursecertificate": {
+                "@id": "https://schema.affinidi.io/AHCVitalAggregateV1R0.jsonld",
+                "@context": {
+                    "@version": 1.1,
+                    "@protected": true
+                }
+            },
+            "vitalAggregateID": {
+                "@id": "schema-id:vitalAggregateID",
+                "@type": "https://schema.org/Text"
+            },
+            "aggregationDate": {
+                "@id": "schema-id:aggregationDate",
+                "@type": "https://schema.org/Text"
+            },
+            "measurementType": {
+                "@id": "schema-id:measurementType",
+                "@type": "https://schema.org/Text"
+            },
+            "organizationId": {
+                "@id": "schema-id:organizationId",
+                "@type": "https://schema.org/Text"
+            },
+            "user": {
+                "@id": "schema-id:user",
+                "@context": {
+                    "userId": {
+                        "@id": "schema-id:userId",
+                        "@type": "https://schema.org/Text"
+                    },
+                    "name": {
+                        "@id": "schema-id:name",
+                        "@type": "https://schema.org/Text"
+                    },
+                    "gender": {
+                        "@id": "schema:gender",
+                        "@type": "https://schema.org/Text"
+                    },
+                    "email": {
+                        "@id": "schema-id:email",
+                        "@type": "https://schema.org/Text"
+                    },
+                    "phone": {
+                        "@id": "schema-id:phone",
+                        "@type": "https://schema.org/Text"
+                    },
+                    "heightInch": {
+                        "@id": "schema-id:heightInch",
+                        "@type": "https://schema.org/Text"
+                    },
+                    "emergencyContacts": {
+                        "@id": "schema-id:emergencyContacts",
+                        "@context": {
+                            "name": {
+                                "@id": "schema-id:name",
+                                "@type": "https://schema.org/Text"
+                            },
+                            "phone": {
+                                "@id": "schema-id:phone",
+                                "@type": "https://schema.org/Text"
+                            },
+                            "email": {
+                                "@id": "schema-id:email",
+                                "@type": "https://schema.org/Text"
+                            },
+                            "relation": {
+                                "@id": "schema-id:relation",
+                                "@type": "https://schema.org/Text"
+                            }
+                        }
+                    }
+                }
+            },
+            "currentConditions": {
+                "@id": "schema-id:currentConditions",
+                "@context": {
+                    "id": {
+                        "@id": "schema-id:id",
+                        "@type": "https://schema.org/Text"
+                    },
+                    "name": {
+                        "@id": "schema-id:name",
+                        "@type": "https://schema.org/Text"
+                    },
+                    "description": {
+                        "@id": "schema-id:description",
+                        "@type": "https://schema.org/Text"
+                    },
+                    "severity": {
+                        "@id": "schema-id:severity",
+                        "@type": "https://schema.org/Text"
+                    }
+                }
+            },
+            "currBmiValue": {
+                "@id": "schema-id:currBmiValue",
+                "@type": "https://schema.org/Text"
+            },
+            "weightDailyAvgLbs": {
+                "@id": "schema-id:weightDailyAvgLbs",
+                "@type": "https://schema.org/Text"
+            },
+            "bpSysUom": {
+                "@id": "schema-id:bpSysUom",
+                "@type": "https://schema.org/Text"
+            },
+            "bpDiaUom": {
+                "@id": "schema-id:bpDiaUom",
+                "@type": "https://schema.org/Text"
+            },
+            "bpSys1DayTrend": {
+                "@id": "schema-id:bpSys1DayTrend",
+                "@type": "https://schema.org/Text"
+            },
+            "bpDia1DayTrend": {
+                "@id": "schema-id:bpDia1DayTrend",
+                "@type": "https://schema.org/Text"
+            },
+            "bpSys1DayAvg": {
+                "@id": "schema-id:bpSys1DayAvg",
+                "@type": "https://schema.org/Text"
+            },
+            "bpDia1DayAvg": {
+                "@id": "schema-id:bpDia1DayAvg",
+                "@type": "https://schema.org/Text"
+            },
+            "bpSys7DayAvg": {
+                "@id": "schema-id:bpSys7DayAvg",
+                "@type": "https://schema.org/Text"
+            },
+            "bpDia7DayAvg": {
+                "@id": "schema-id:bpDia7DayAvg",
+                "@type": "https://schema.org/Text"
+            },
+            "bpSys30DayAvg": {
+                "@id": "schema-id:bpSys30DayAvg",
+                "@type": "https://schema.org/Text"
+            },
+            "bpDia30DayAvg": {
+                "@id": "schema-id:bpDia30DayAvg",
+                "@type": "https://schema.org/Text"
+            },
+            "bpSys90DayAvg": {
+                "@id": "schema-id:bpSys90DayAvg",
+                "@type": "https://schema.org/Text"
+            },
+            "bpDia90DayAvg": {
+                "@id": "schema-id:bpDia90DayAvg",
+                "@type": "https://schema.org/Text"
+            },
+            "bpSys180DayAvg": {
+                "@id": "schema-id:bpSys180DayAvg",
+                "@type": "https://schema.org/Text"
+            },
+            "bpDia180DayAvg": {
+                "@id": "schema-id:bpDia180DayAvg",
+                "@type": "https://schema.org/Text"
+            },
+            "bpSys360DayAvg": {
+                "@id": "schema-id:bpSys360DayAvg",
+                "@type": "https://schema.org/Text"
+            },
+            "bpDia360DayAvg": {
+                "@id": "schema-id:bpDia360DayAvg",
+                "@type": "https://schema.org/Text"
+            }
+        }
+    }
+}

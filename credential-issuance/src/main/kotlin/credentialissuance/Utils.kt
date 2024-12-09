@@ -29,39 +29,19 @@ class IssuanceService() {
 
     fun startIssuance(userDID: String): Mono<StartIssuanceResponse> {
         val apiEndpoint = String.format("/cis/v1/%s/issuance/start", dotenv["PROJECT_ID"]!!)
-
-        val user = mutableMapOf<String, Any>()
-        user["name"] = "John"
-        user["email"] = "jkk@.dk.dk"
-        user["age"] = "25"
-        user["userId"] = "1"
-        user["isActive"] = "true"
-        user["address"] = mapOf(
-            "street" to "Main Street",
-            "city" to "New York",
-            "zip" to "10001"
-        )
-        val vitals = mutableMapOf<String, Any>()
-
-        val credentialData = mutableMapOf<String, Any>()
-        credentialData["user"] = user
-        credentialData["vitals"] = vitals
-
+        val requestData = loadPostRequest("src/main/resources/data/aggregateData1.json");
         val requestBody = mutableMapOf<String, Any>()
         requestBody["data"] = listOf(
             mapOf(
-                "credentialTypeId" to "healthProfile",
-                "credentialData" to credentialData
+                "credentialTypeId" to "AHC Vitals Aggregate",
+                "credentialData" to requestData
             )
         )
         requestBody["claimMode"] = "NORMAL"
         requestBody["holderDid"] = userDID
 
-        println(requestBody)
-
         val projectScopedToken = generatePST()
         val headers = mapOf("Authorization" to "Bearer $projectScopedToken")
-
         val response = sendPostRequest(apiEndpoint, headers, requestBody)
         response.subscribe { jsonResponse ->
             val jsonString = Json.encodeToString(jsonResponse)
