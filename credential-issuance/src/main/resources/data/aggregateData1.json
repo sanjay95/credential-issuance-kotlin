@@ -1,0 +1,48 @@
+{
+  "vitalAggregateID": "123456",
+  "aggregationDate": "2024-12-09",
+  "measurementType": "Blood Pressure",
+  "organizationId": "Org001",
+  "user": {
+    "userId": "user123",
+    "name": "John Doe",
+    "gender": "Male",
+    "email": "john.doe@example.com",
+    "phone": "1234567890",
+    "heightInch": "72",
+    "emergencyContacts": [
+      {
+        "name": "Jane Doe",
+        "phone": "0987654321",
+        "email": "jane.doe@example.com",
+        "relation": "Spouse"
+      }
+    ]
+  },
+  "currentConditions": [
+    {
+      "conditionId": "cond1",
+      "name": "Hypertension",
+      "description": "High blood pressure",
+      "severity": "High"
+    }
+  ],
+  "currBmiValue": 24.5,
+  "weightDailyAvgLbs": 170.0,
+  "bpSysUom": "mmHg",
+  "bpDiaUom": "mmHg",
+  "bpSys1DayTrend": "Stable",
+  "bpDia1DayTrend": "Stable",
+  "bpSys1DayAvg": 120.0,
+  "bpDia1DayAvg": 80.0,
+  "bpSys7DayAvg": 118.0,
+  "bpDia7DayAvg": 78.0,
+  "bpSys30DayAvg": 115.0,
+  "bpDia30DayAvg": 75.0,
+  "bpSys90DayAvg": 117.0,
+  "bpDia90DayAvg": 77.0,
+  "bpSys180DayAvg": 119.0,
+  "bpDia180DayAvg": 79.0,
+  "bpSys360DayAvg": 121.0,
+  "bpDia360DayAvg": 81.0
+}
