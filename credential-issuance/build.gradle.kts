@@ -31,11 +31,14 @@ dependencies {
     runtimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    implementation(files("src/main/lib/auth-provider/1.29.0/auth-provider-1.29.0.jar"))
     implementation("software.amazon.jsii:jsii-runtime:1.68.0")
     implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
     implementation("io.projectreactor:reactor-core:3.7.0")
+    implementation("com.affinidi.tdk:vault.data.manager.client:1.3.0")
+    implementation("com.affinidi.tdk:iam.client:1.2.1")
+    implementation("com.affinidi.tdk:wallets.client:1.2.1")
+    implementation("com.affinidi.tdk:auth.provider:1.2.1")
+    implementation("com.affinidi.tdk:common:1.2.1")
 }
 
 kotlin {
