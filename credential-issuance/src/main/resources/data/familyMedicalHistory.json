@@ -1,0 +1,72 @@
+{
+  "user": {
+    "userId": "user123",
+    "name": "John Doe",
+    "gender": "Male",
+    "email": "john.doe@example.com",
+    "phone": "1234567890"
+  },
+  "aggregationDate": "2024-12-09",
+  "familyHistory": [
+    {
+      "name": "Jane Doe",
+      "relation": "Spouse",
+      "disease": [
+        {
+          "conditionId": "cond2",
+          "diseaseName": "Diabetes",
+          "description": "High blood sugar levels",
+          "severity": "Medium",
+          "firstOccuranceDate": "2015-06-01"
+        },
+        {
+          "conditionId": "cond3",
+          "diseaseName": "Asthma",
+          "description": "Respiratory condition",
+          "severity": "Low",
+          "firstOccuranceDate": "2010-09-15"
+        }
+      ]
+    },
+    {
+      "name": "Michael Doe",
+      "relation": "Father",
+      "disease": [
+        {
+          "conditionId": "cond4",
+          "diseaseName": "Cardiovascular Disease",
+          "description": "Cardiovascular condition",
+          "severity": "High",
+          "firstOccuranceDate": "2000-01-20"
+        },
+        {
+          "conditionId": "cond5",
+          "diseaseName": "Arthritis",
+          "description": "Joint inflammation",
+          "severity": "Medium",
+          "firstOccuranceDate": "2012-03-10"
+        }
+      ]
+    },
+    {
+      "name": "Sarah Doe",
+      "relation": "Mother",
+      "disease": [
+        {
+          "conditionId": "cond6",
+          "diseaseName": "Osteoporosis",
+          "description": "Bone density loss",
+          "severity": "Medium",
+          "firstOccuranceDate": "2018-07-22"
+        },
+        {
+          "conditionId": "cond7",
+          "diseaseName": "Thyroid Disorder",
+          "description": "Thyroid gland issues",
+          "severity": "Low",
+          "firstOccuranceDate": "2011-11-05"
+        }
+      ]
+    }
+  ]
+}
