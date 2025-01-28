@@ -1,7 +1,7 @@
 package credentialissuance
 
 
-import com.affinidi.tdk.authprovider.AuthProvider
+import com.affinidi.tdk.authProvider.AuthProvider;
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException
@@ -29,7 +29,7 @@ class IssuanceService() {
 
     fun startIssuance(userDID: String): Mono<StartIssuanceResponse> {
         val apiEndpoint = String.format("/cis/v1/%s/issuance/start", dotenv["PROJECT_ID"]!!)
-        val requestData = loadPostRequest("src/main/resources/data/aggregateData1.json");
+        val requestData = loadPostRequest("src/main/resources/data/aggregateData1.json")
         val requestBody = mutableMapOf<String, Any>()
         requestBody["data"] = listOf(
             mapOf(
@@ -75,16 +75,16 @@ class IssuanceService() {
     }
 
     private fun getAuthProvider(): AuthProvider {
-        val params = mutableMapOf<String, String>()
+        //    val authProvider = AuthProvider.Configurations()
+        //     .projectId(dotenv["PROJECT_ID"]!!)
+        //     .tokenId(dotenv["TOKEN_ID"]!!)
+        //     .privateKey(dotenv["PRIVATE_KEY"]!!.replace("\\n", System.lineSeparator()))
+        //     .keyId(dotenv["KEY_ID"]!!)
+        //     .passphrase(dotenv["PASSPHRASE"]!!)
+        //     .build()
+        // return authProvider
 
-        params["projectId"] = dotenv["PROJECT_ID"]!!
-
-        params["tokenId"] = dotenv["TOKEN_ID"]!!
-        params["keyId"] = dotenv["KEY_ID"]!!
-        params["privateKey"] = dotenv["PRIVATE_KEY"]!!.replace("\\n", System.lineSeparator())
-        params["passphrase"] = dotenv["PASSPHRASE"]!!
-
-        return AuthProvider(params)
+        return AuthProvider.Configurations().buildWithEnv();
     }
 
     fun generatePST(): String {
@@ -94,19 +94,19 @@ class IssuanceService() {
         return projectScopedToken
     }
 
-    fun getIotaJWT(userDID: String): String {
-        val authProvider = getAuthProvider()
-        val iotaConfigId = dotenv["IOTA_CONFIG_ID"]!!
+    // fun getIotaJWT(userDID: String): String {
+    //     val authProvider = getAuthProvider()
+    //     val iotaConfigId = dotenv["IOTA_CONFIG_ID"]!!
 
-        val tokenOutput = authProvider.createIotaToken(iotaConfigId, userDID)
-        val jwt = tokenOutput.iotaJwt
-        val sessionId = tokenOutput.iotaSessionId
+    //     val tokenOutput = authProvider.createIotaToken(iotaConfigId, userDID)
+    //     val jwt = tokenOutput.iotaJwt
+    //     val sessionId = tokenOutput.iotaSessionId
 
-        println("Iota JWT: $jwt")
-        println("Iota sessionId: $sessionId")
+    //     println("Iota JWT: $jwt")
+    //     println("Iota sessionId: $sessionId")
 
-        return jwt
-    }
+    //     return jwt
+    // }
 
 }
 
