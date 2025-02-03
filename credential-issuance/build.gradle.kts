@@ -40,6 +40,7 @@ dependencies {
     implementation("com.affinidi.tdk:auth.provider:1.2.1")
     implementation("com.affinidi.tdk:common:1.2.1")
     implementation("com.affinidi.tdk:credential.issuance.client:1.4.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
 }
 
 kotlin {

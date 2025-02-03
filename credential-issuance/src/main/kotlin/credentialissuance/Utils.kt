@@ -9,6 +9,7 @@ import com.affinidi.tdk.credential.issuance.client.models.StartIssuanceInput
 import com.affinidi.tdk.credential.issuance.client.models.StartIssuanceInput.ClaimModeEnum
 import com.affinidi.tdk.credential.issuance.client.models.StartIssuanceInputDataInner
 import com.affinidi.tdk.credential.issuance.client.models.StartIssuanceResponse
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.cdimascio.dotenv.Dotenv
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
@@ -16,13 +17,21 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
 import reactor.core.publisher.Mono
+
 
 @Service
 class IssuanceService() {
+
+   
+
     private val logger: Logger = LoggerFactory.getLogger(IssuanceController::class.java)
 
     private val dotenv: Dotenv = Dotenv.load()
+   
 
     private val webClient =
             WebClient.builder()
@@ -35,12 +44,21 @@ class IssuanceService() {
 
         val holderDid = userDID
         val credentialType = dotenv["CREDENTIAL_TYPE_ID"]
-        val credentialData: MutableMap<String, Any> = mutableMapOf()
-        credentialData["firstName"] = "Jhon"
-        credentialData["lastName"] = "Doe"
-        credentialData["whyHive"] = "Testing"
-        credentialData["writtenAssessment"] = "Is it needed"
-        credentialData["assessmentDate"] = "2021-09-01"
+        // val credentialData: MutableMap<String, Any> = mutableMapOf()
+         var credentialRawData : String =""//File("credential-issuance/src/main/resources/data/aggregateData1.json").readText()
+          val resource = this::class.java.classLoader.getResource("data/aggregateData1.json")
+        if (resource != null) {
+            val path = Paths.get(resource.toURI())
+            credentialRawData = Files.readString(path)
+        }
+        val objectMapper = ObjectMapper()
+        val data: Map<String, Any> = objectMapper.readValue(credentialRawData, object : com.fasterxml.jackson.core.type.TypeReference<MutableMap<String, Any>>() {})
+        
+        var  credentialData: MutableMap<String, Any> = HashMap()
+        credentialData.putAll(data);
+        println("Credential Data: $credentialData")
+
+
 
         // Create a client for issuance
         val issuanceClient = ApiClient()
