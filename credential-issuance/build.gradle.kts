@@ -39,6 +39,7 @@ dependencies {
     implementation("com.affinidi.tdk:wallets.client:1.2.1")
     implementation("com.affinidi.tdk:auth.provider:1.2.1")
     implementation("com.affinidi.tdk:common:1.2.1")
+    implementation("com.affinidi.tdk:credential.issuance.client:1.4.0")
 }
 
 kotlin {
