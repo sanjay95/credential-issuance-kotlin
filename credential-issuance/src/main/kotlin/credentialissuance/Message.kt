@@ -3,7 +3,7 @@ package credentialissuance
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class StartIssuanceResponse(
+data class StartIssuanceResponselocal(
     /**
      * URL where wallet can view offer details
      */
