@@ -2,6 +2,7 @@ package credentialissuance
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 import java.io.File
 
 @Serializable
@@ -60,5 +61,5 @@ data class AggregateHealthData(
 
 fun loadPostRequest(jsonFilePath: String): AggregateHealthData {
     val jsonString = File(jsonFilePath).readText()
-    return Json.decodeFromString(AggregateHealthData.serializer(), jsonString)
+    return Json.decodeFromString(serializer<AggregateHealthData>(), jsonString)
 }
