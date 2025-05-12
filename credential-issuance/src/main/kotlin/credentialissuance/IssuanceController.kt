@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.net.URLEncoder
 import com.affinidi.tdk.credential.issuance.client.models.StartIssuanceResponse;
 
 @RestController
@@ -17,6 +18,7 @@ class IssuanceController(private val service: IssuanceService) {
     @PostMapping
     fun post(@RequestBody userDID: UserDID): ResponseEntity<StartIssuanceResponse> {
         logger.info("Received userDID: ${userDID.userDID}")
+        logger.info(URLEncoder.encode("https://aca-bank.vercel.app/callback", "UTF-8"))
         val savedMessage = service.startIssuance(userDID.userDID).block()
 
         // Return the saved message as is
