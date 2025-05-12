@@ -7,46 +7,65 @@
     <style>
       body {
         font-family: Arial, sans-serif;
-        display: flex;
-        justify-content: space-between;
+        margin: 0;
         padding: 20px;
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        flex-wrap: wrap;
       }
-      .container {
-        width: 45%;
+
+      .container,
+      .response-container {
+        flex: 1 1 100%;
+        max-width: 100%;
       }
+
+      @media (min-width: 768px) {
+        .container,
+        .response-container {
+          flex: 1 1 45%;
+          max-width: 45%;
+        }
+      }
+
       .input-container {
         display: flex;
         flex-direction: column;
         margin-bottom: 20px;
       }
+
       label {
         margin-bottom: 10px;
         font-weight: bold;
       }
-      input[type="text"] {
+
+      input[type="text"],
+      button {
         padding: 10px;
         font-size: 16px;
-        border: 2px solid #ccc;
-        border-radius: 4px;
+        margin-bottom: 10px;
       }
+
       button {
-        padding: 10px 20px;
-        font-size: 16px;
-        color: #fff;
         background-color: #007bff;
+        color: #fff;
         border: none;
         border-radius: 4px;
         cursor: pointer;
       }
+
       button:hover {
         background-color: #0056b3;
       }
+
       .response-container {
         border: 1px solid #ccc;
         padding: 20px;
         border-radius: 4px;
         background-color: #f9f9f9;
       }
+
       .field-block {
         margin: 10px 0;
         word-wrap: break-word;
@@ -57,42 +76,51 @@
         border-radius: 5px;
         position: relative;
       }
+
       .copy-button {
         position: absolute;
         top: 10px;
         right: 10px;
-        padding: 4px 8px;
         font-size: 12px;
-        cursor: pointer;
+        padding: 4px 8px;
         background-color: #333;
         color: #fff;
         border: none;
         border-radius: 4px;
+        cursor: pointer;
       }
+
       .dynamic-link {
-        display: inline-block;
+        display: block;
         margin-top: 20px;
         padding: 10px 20px;
-        font-size: 16px;
-        color: #fff;
         background-color: #28a745;
-        border: none;
-        border-radius: 4px;
+        color: white;
         text-decoration: none;
+        border-radius: 4px;
+        text-align: center;
       }
-      .separator {
-        width: 1px;
-        background-color: #ccc;
-        height: 100%;
-        margin: 0 20px;
-        border-left: 2px solid #000;
-      }
+
       .loading {
         font-size: 16px;
         color: #007bff;
       }
+
       #qrcode {
         margin-top: 20px;
+        display: flex;
+        justify-content: center;
+      }
+      .collapsed {
+        max-height: 0;
+        overflow: hidden;
+        padding: 0;
+        border: none;
+      }
+
+      .toggle-button {
+        margin-bottom: 10px;
+        background-color: #6c757d;
       }
     </style>
   </head>
@@ -110,7 +138,15 @@
     <div class="separator"></div>
 
     <div class="container response-container">
-      <h2>Response</h2>
+      <h2
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        Response
+      </h2>
       <div id="txCodeBlock" class="field-block" style="display: none">
         <button class="copy-button" onclick="copyToClipboard('txCodeText')">
           Copy
@@ -145,7 +181,7 @@
             "Error: " + error.message;
         }
       };
-
+      document.getElementById("qrcode").scrollIntoView({ behavior: "smooth" });
       function copyToClipboard(id) {
         const text = document.getElementById(id).innerText;
         navigator.clipboard.writeText(text);
@@ -192,6 +228,12 @@
               width: 200,
               height: 200,
             });
+            document
+              .querySelector(".response-container")
+              .classList.remove("collapsed");
+            setTimeout(() => {
+              qrContainer.scrollIntoView({ behavior: "smooth" });
+            }, 100);
           }
 
           if (data.txCode) {
@@ -203,6 +245,10 @@
         } finally {
           loadingIndicator.style.display = "none";
         }
+      }
+      function toggleResponse() {
+        const container = document.querySelector(".response-container");
+        container.classList.toggle("collapsed");
       }
     </script>
   </body>
