@@ -1,7 +1,6 @@
 package credentialissuance
 
 import com.affinidi.tdk.authProvider.AuthProvider
-import com.affinidi.tdk.common.VaultUtil
 import com.affinidi.tdk.credential.issuance.client.ApiClient
 import com.affinidi.tdk.credential.issuance.client.apis.IssuanceApi
 import com.affinidi.tdk.credential.issuance.client.auth.ApiKeyAuth
@@ -11,16 +10,19 @@ import com.affinidi.tdk.credential.issuance.client.models.StartIssuanceInputData
 import com.affinidi.tdk.credential.issuance.client.models.StartIssuanceResponse
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.cdimascio.dotenv.Dotenv
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.security.Security
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.util.UriComponentsBuilder
 import reactor.core.publisher.Mono
-import java.security.Security
 
 @Service
 class IssuanceService() {
@@ -77,8 +79,8 @@ class IssuanceService() {
                 // Create input for issuance service
                 val startIssuanceInput =
                         StartIssuanceInput()
-                                .holderDid(holderDid)
-                                .claimMode(ClaimModeEnum.NORMAL)
+                                // .holderDid(holderDid)
+                                .claimMode(ClaimModeEnum.TX_CODE)
                                 .data(
                                         mutableListOf(
                                                 StartIssuanceInputDataInner()
@@ -86,9 +88,6 @@ class IssuanceService() {
                                                         .credentialData(credentialData)
                                         )
                                 )
-                println(
-                        "Start Issuance Input: ${objectMapper.writeValueAsString(startIssuanceInput)}"
-                )
 
                 // Issue the credential using the data above
                 val response = issuanceApi.startIssuance(dotenv["PROJECT_ID"], startIssuanceInput)
@@ -99,7 +98,8 @@ class IssuanceService() {
                 )
 
                 response.setCredentialOfferUri(
-                        VaultUtil.buildClaimLink(response.getCredentialOfferUri())
+                        // VaultUtil.buildClaimLink(response.getCredentialOfferUri())
+                        buildClaimLinkWithRedirect(response.getCredentialOfferUri())
                 )
                 System.out.println(
                         "Consumable Vault Claim Link specific to your environment ********** " +
@@ -109,28 +109,44 @@ class IssuanceService() {
                 return Mono.just(response)
         }
 
-        // private fun sendPostRequest(
-        //     apiEndpoint: String,
-        //     headers: Map<String, String>,
-        //     requestBody: Any
-        // ): Mono<StartIssuanceResponselocal> {
-        //     logger.info("apiEndpoint  apiEndpoint : $apiEndpoint")
+        private fun buildClaimLinkWithRedirect(credentialOfferUri: String): String {
+                var webVaultUrl = dotenv["VAULT_URL"]!!
+                val redirectUri = dotenv["REDIRECT_URI"]!!
+                if (!credentialOfferUri.equals("") &&
+                                !webVaultUrl.equals("") &&
+                                !redirectUri.equals("")
+                ) {
+                        var claimURL: String =
+                                UriComponentsBuilder.fromUriString(webVaultUrl)
+                                        .queryParam(
+                                                "credential_offer_uri",
+                                                URLEncoder.encode(
+                                                        credentialOfferUri,
+                                                        StandardCharsets.UTF_8.toString()
+                                                )
+                                        )
+                                        .queryParam(
+                                                "return_uri",
+                                                URLEncoder.encode(
+                                                        redirectUri,
+                                                        StandardCharsets.UTF_8.toString()
+                                                )
+                                        )
+                                        .build()
+                                        .toUriString()
 
-        //     return webClient.post()
-        //         .uri(apiEndpoint)
-        //         .headers {
-        //             headers.forEach { (key, value) ->
-        //                 it.set(key, value)
-        //             }
-        //         }
-        //         .bodyValue(requestBody)
-        //         .retrieve()
-        //         .bodyToMono(StartIssuanceResponse::class.java)
-        //         .onErrorResume(WebClientResponseException::class.java) { e ->
-        //             System.err.println("WebClientResponseException: ${e.responseBodyAsString}")
-        //             Mono.empty() // Or handle error as needed
-        //         }
-        // }
+                        println("Claim URL: $claimURL")
+                        println("Claim URL zto String: ${claimURL.toString()}")
+                        // println("Claim URL toASCIIString: ${claimURL.toASCIIString()}")
+
+                        return claimURL
+                } else {
+                        System.out.println(
+                                "Invalid Credential Offer URI passed to utility $credentialOfferUri. Returning vault url"
+                        )
+                        return webVaultUrl
+                }
+        }
 
         private fun getAuthProvider(): AuthProvider {
 
@@ -174,12 +190,11 @@ class IssuanceService() {
         // }
 
         fun listSecurityProviders() {
-        for (provider in Security.getProviders()) {
-            println("Provider: ${provider.name}")
-            for (service in provider.services) {
-                println("  Algorithm: ${service.algorithm}")
-            }
+                for (provider in Security.getProviders()) {
+                        println("Provider: ${provider.name}")
+                        for (service in provider.services) {
+                                println("  Algorithm: ${service.algorithm}")
+                        }
+                }
         }
-    }
-
 }

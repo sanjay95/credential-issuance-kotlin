@@ -1,155 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoke API and Display Response</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Issue & Show QR</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-        }
-        .container {
-            width: 45%;
-        }
-        .input-container {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 20px;
-        }
-        label {
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-        input[type="text"] {
-            padding: 10px;
-            font-size: 16px;
-            border: 2px solid #ccc;
-            border-radius: 4px;
-            transition: border-color 0.3s;
-        }
-        input[type="text"]:focus {
-            border-color: #66afe9;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .response-container {
-            border: 1px solid #ccc;
-            padding: 20px;
-            border-radius: 4px;
-            background-color: #f9f9f9;
-        }
-        .dynamic-link {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #28a745;
-            border: none;
-            border-radius: 4px;
-            text-decoration: none;
-            text-align: center;
-            transition: background-color 0.3s;
-        }
-        .dynamic-link:hover {
-            background-color: #218838;
-        }
-        .separator {
-            width: 1px;
-            background-color: #ccc;
-            height: 100%;
-            margin: 0 20px;
-            border-left: 2px solid #000; /* Add this line to make the separator visible */
-        }
-        .loading {
-            display: none;
-            font-size: 16px;
-            color: #007bff;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+      }
+      .container {
+        width: 45%;
+      }
+      .input-container {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+      }
+      label {
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+      input[type="text"] {
+        padding: 10px;
+        font-size: 16px;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .response-container {
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+      }
+      .field-block {
+        margin: 10px 0;
+        word-wrap: break-word;
+        font-family: monospace;
+        font-size: 14px;
+        background: #eee;
+        padding: 10px;
+        border-radius: 5px;
+        position: relative;
+      }
+      .copy-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 4px 8px;
+        font-size: 12px;
+        cursor: pointer;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+      }
+      .dynamic-link {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #28a745;
+        border: none;
+        border-radius: 4px;
+        text-decoration: none;
+      }
+      .separator {
+        width: 1px;
+        background-color: #ccc;
+        height: 100%;
+        margin: 0 20px;
+        border-left: 2px solid #000;
+      }
+      .loading {
+        font-size: 16px;
+        color: #007bff;
+      }
+      #qrcode {
+        margin-top: 20px;
+      }
     </style>
-    <script>
-        var vaultUrl = "";
-        window.onload = async function() {
-            const responseDiv = document.getElementById("response");
-
-            try {
-                const response = await fetch('/VAULT_URL', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-
-                vaultUrl = await response.text();
-            } catch (error) {
-                responseDiv.textContent = 'Error: ' + error.message;
-            }
-        }
-        async function invokeApi() {
-            const userDID = document.getElementById("userDID").value;
-            const responseDiv = document.getElementById("response");
-            const dynamicLink = document.getElementById("dynamicLink");
-            const loadingIndicator = document.getElementById("loading");
-
-            try {
-                loadingIndicator.style.display = "block";
-                const response = await fetch('/issuance', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ userDID: userDID })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-
-                const data = await response.json();
-                responseDiv.textContent = JSON.stringify(data, null, 2);
-                dynamicLink.href = vaultUrl + data.credentialOfferUri;
-                dynamicLink.textContent = "Save to Vault";
-            } catch (error) {
-                responseDiv.textContent = 'Error: ' + error.message;
-            } finally {
-                loadingIndicator.style.display = "none";
-            }
-        }
-    </script>
-</head>
-<body>
-<div class="container">
-    <h1>Issue health Profile and Display Response</h1>
-    <div class="input-container">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Issue Health Profile</h1>
+      <div class="input-container">
         <label for="userDID">User DID:</label>
-        <input type="text" id="userDID" name="userDID">
+        <input type="text" id="userDID" name="userDID" />
+      </div>
+      <button onclick="invokeApi()">Issue Health Credentials</button>
+      <div id="loading" class="loading" style="display: none">Issuing...</div>
     </div>
-    <button onclick="invokeApi()">Issue Health Credentials</button>
-    <div id="loading" class="loading">Issuing...</div>
-</div>
-<div class="separator"></div>
-<div class="container response-container">
-    <h2>Response:</h2>
-    <pre id="response"></pre>
-    <a id="dynamicLink" class="dynamic-link" href="#" target="_blank"></a>
-</div>
-</body>
+
+    <div class="separator"></div>
+
+    <div class="container response-container">
+      <h2>Response</h2>
+      <div id="txCodeBlock" class="field-block" style="display: none">
+        <button class="copy-button" onclick="copyToClipboard('txCodeText')">
+          Copy
+        </button>
+        <div id="txCodeText"></div>
+      </div>
+      <div id="uriBlock" class="field-block" style="display: none">
+        <button class="copy-button" onclick="copyToClipboard('uriText')">
+          Copy
+        </button>
+        <div id="uriText"></div>
+      </div>
+      <pre id="response" style="overflow-x: auto"></pre>
+      <a id="dynamicLink" class="dynamic-link" target="_blank"></a>
+      <div id="qrcode"></div>
+    </div>
+
+    <!-- QR Code Generator -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script>
+      let vaultUrl = "";
+
+      window.onload = async function () {
+        try {
+          const response = await fetch("/VAULT_URL");
+          if (!response.ok)
+            throw new Error("Network error: " + response.statusText);
+          vaultUrl = await response.text();
+        } catch (error) {
+          document.getElementById("response").textContent =
+            "Error: " + error.message;
+        }
+      };
+
+      function copyToClipboard(id) {
+        const text = document.getElementById(id).innerText;
+        navigator.clipboard.writeText(text);
+      }
+
+      async function invokeApi() {
+        const userDID = document.getElementById("userDID").value;
+        const responseDiv = document.getElementById("response");
+        const dynamicLink = document.getElementById("dynamicLink");
+        const loadingIndicator = document.getElementById("loading");
+        const qrContainer = document.getElementById("qrcode");
+
+        const uriText = document.getElementById("uriText");
+        const txCodeText = document.getElementById("txCodeText");
+
+        try {
+          loadingIndicator.style.display = "block";
+          qrContainer.innerHTML = "";
+          uriText.innerText = "";
+          txCodeText.innerText = "";
+          document.getElementById("uriBlock").style.display = "none";
+          document.getElementById("txCodeBlock").style.display = "none";
+
+          const response = await fetch("/issuance", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userDID }),
+          });
+
+          if (!response.ok)
+            throw new Error("Network error: " + response.statusText);
+          const data = await response.json();
+
+          responseDiv.textContent = JSON.stringify(data, null, 2);
+
+          if (data.credentialOfferUri) {
+            uriText.innerText = data.credentialOfferUri;
+            document.getElementById("uriBlock").style.display = "block";
+            dynamicLink.href = data.credentialOfferUri;
+            dynamicLink.textContent = "Save to Vault";
+
+            new QRCode(qrContainer, {
+              text: data.credentialOfferUri,
+              width: 200,
+              height: 200,
+            });
+          }
+
+          if (data.txCode) {
+            txCodeText.innerText = data.txCode;
+            document.getElementById("txCodeBlock").style.display = "block";
+          }
+        } catch (error) {
+          responseDiv.textContent = "Error: " + error.message;
+        } finally {
+          loadingIndicator.style.display = "none";
+        }
+      }
+    </script>
+  </body>
 </html>

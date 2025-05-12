@@ -1,0 +1,867 @@
+{
+  "A": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://schema.affinidi.io/personalInformationV1R0.json",
+    "$metadata": {
+      "version": 1,
+      "revision": 0,
+      "discoverable": true,
+      "uris": {
+        "jsonLdContext": "https://schema.affinidi.io/personalInformationV1R0.jsonld",
+        "jsonSchema": "https://schema.affinidi.io/personalInformationV1R0.json"
+      }
+    },
+    "title": "personalInformation",
+    "description": "personalInformationV1R0",
+    "type": "object",
+    "required": [
+      "@context",
+      "type",
+      "issuer",
+      "issuanceDate",
+      "credentialSubject"
+    ],
+    "properties": {
+      "@context": {
+        "type": ["string", "array", "object"]
+      },
+      "id": {
+        "type": "string",
+        "format": "uri"
+      },
+      "type": {
+        "type": ["string", "array"],
+        "items": {
+          "type": "string"
+        }
+      },
+      "issuer": {
+        "type": ["string", "object"],
+        "format": "uri",
+        "required": ["id"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "issuanceDate": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "expirationDate": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "credentialSubject": {
+        "type": "object",
+        "properties": {
+          "personalInformation": {
+            "type": "object",
+            "properties": {
+              "positionApplied": {
+                "title": "positionApplied",
+                "type": "string"
+              },
+              "firstName": { "title": "firstName", "type": "string" },
+              "middleName": { "title": "middleName", "type": "string" },
+              "lastName": { "title": "lastName", "type": "string" },
+              "aka": { "title": "aka", "type": "string" },
+              "email": {
+                "title": "email",
+                "type": "string",
+                "format": "email"
+              },
+              "phoneNo": { "title": "phoneNo", "type": "string" },
+              "alterPhoneNo": { "title": "alterPhoneNo", "type": "string" },
+              "civilStatus": { "title": "civilStatus", "type": "string" },
+              "gender": { "title": "gender", "type": "string" },
+              "primaryIdCard": { "title": "primaryIdCard", "type": "string" },
+              "primaryIdCardNo": {
+                "title": "primaryIdCardNo",
+                "type": "string"
+              },
+              "primaryIdCard2": { "title": "primaryIdCard2", "type": "string" },
+              "primaryIdCardNo2": {
+                "title": "primaryIdCardNo2",
+                "type": "string"
+              },
+              "photo": { "title": "photo", "type": "string", "format": "uri" },
+              "notes": { "title": "notes", "type": "string" }
+            },
+            "required": []
+          },
+          "addressDetails": {
+            "title": "addressDetails",
+            "type": "object",
+            "description": "Address Details",
+            "properties": {
+              "address": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "addressLine1": {
+                      "title": "addressLine1",
+                      "type": "string"
+                    },
+                    "addressLine2": {
+                      "title": "addressLine2",
+                      "type": "string"
+                    },
+                    "city": { "title": "city", "type": "string" },
+                    "stateOrRegion": {
+                      "title": "stateOrRegion",
+                      "type": "string"
+                    },
+                    "postalCode": { "title": "postalCode", "type": "string" },
+                    "country": { "title": "country", "type": "string" },
+                    "stayDateFrom": {
+                      "title": "stayDateFrom",
+                      "type": "string"
+                    },
+                    "stayDateTo": {
+                      "title": "stayDateTo",
+                      "type": "string"
+                    },
+                    "houseOwnerName": {
+                      "title": "houseOwnerName",
+                      "type": "string"
+                    },
+                    "houseOwnerContactNo": {
+                      "title": "houseOwnerContactNo",
+                      "type": "string"
+                    },
+                    "houseOwnerEmail": {
+                      "title": "houseOwnerEmail",
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "neighborName": {
+                      "title": "neighborName",
+                      "type": "string"
+                    },
+                    "neighborContactNo": {
+                      "title": "neighborContactNo",
+                      "type": "string"
+                    },
+                    "neighborEmail": {
+                      "title": "neighborEmail",
+                      "type": "string",
+                      "format": "email"
+                    }
+                  },
+                  "required": []
+                }
+              }
+            }
+          },
+          "educationDetails": {
+            "title": "educationDetails",
+            "type": "array",
+            "description": "Education Details",
+            "properties": {
+              "education": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "institutionName": {
+                      "title": "institutionName",
+                      "type": "string"
+                    },
+                    "institutionContactNo": {
+                      "title": "institutionContactNo",
+                      "type": "string"
+                    },
+                    "institutionEmail": {
+                      "title": "institutionEmail",
+                      "type": "string"
+                    },
+                    "isGraduated": {
+                      "title": "isGraduated",
+                      "type": "string"
+                    },
+                    "dateFrom": {
+                      "title": "dateFrom",
+                      "type": "string"
+                    },
+                    "dateTo": {
+                      "title": "dateTo",
+                      "type": "string"
+                    },
+                    "dateGraduated": {
+                      "title": "dateGraduated",
+                      "type": "string"
+                    },
+                    "modeOfStudy": {
+                      "title": "modeOfStudy",
+                      "type": "string"
+                    },
+                    "addressLine1": {
+                      "title": "addressLine1",
+                      "type": "string"
+                    },
+                    "addressLine2": {
+                      "title": "addressLine2",
+                      "type": "string"
+                    },
+                    "postalCode": {
+                      "title": "postalCode",
+                      "type": "string"
+                    },
+                    "stateRegion": {
+                      "title": "stateRegion",
+                      "type": "string"
+                    },
+                    "city": {
+                      "title": "city",
+                      "type": "string"
+                    }
+                  },
+                  "required": ["institutionName", "dateFrom", "dateTo"]
+                }
+              }
+            }
+          },
+          "employmentDetails": {
+            "title": "employmentDetails",
+            "type": "object",
+            "description": "Employment Details",
+            "properties": {
+              "employment": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "companyName": { "title": "companyName", "type": "string" },
+                    "position": { "title": "position", "type": "string" },
+                    "employmentStatus": {
+                      "title": "employmentStatus",
+                      "type": "string"
+                    },
+                    "annualSalary": {
+                      "title": "annualSalary",
+                      "type": "string"
+                    },
+                    "salaryCurrency": {
+                      "title": "salaryCurrency",
+                      "type": "string"
+                    },
+                    "isCurrent": { "title": "isCurrent", "type": "string" },
+                    "whenToContact": {
+                      "title": "whenToContact",
+                      "type": "string"
+                    },
+                    "canCommunicate": {
+                      "title": "canCommunicate",
+                      "type": "string"
+                    },
+                    "dateFrom": { "title": "dateFrom", "type": "string" },
+                    "dateTo": { "title": "dateTo", "type": "string" },
+                    "reasonForLeaving": {
+                      "title": "reasonForLeaving",
+                      "type": "string"
+                    },
+                    "companyEmail": {
+                      "title": "companyEmail",
+                      "type": "string"
+                    },
+                    "addressLine1": {
+                      "title": "addressLine1",
+                      "type": "string"
+                    },
+                    "addressLine2": {
+                      "title": "addressLine2",
+                      "type": "string"
+                    },
+                    "postalCode": { "title": "postalCode", "type": "string" },
+                    "stateRegion": { "title": "stateRegion", "type": "string" },
+                    "city": { "title": "city", "type": "string" },
+                    "country": { "title": "country", "type": "string" },
+                    "hr_first_name": {
+                      "title": "hr_first_name",
+                      "type": "string"
+                    },
+                    "hr_last_name": {
+                      "title": "hr_last_name",
+                      "type": "string"
+                    },
+                    "hr_email": { "title": "hr_email", "type": "string" },
+                    "hr_contact_no": {
+                      "title": "hr_contact_no",
+                      "type": "string"
+                    },
+                    "hr_personnel_position": {
+                      "title": "hr_personnel_position",
+                      "type": "string"
+                    },
+                    "eligibleForRehire": {
+                      "title": "eligibleForRehire",
+                      "type": "string"
+                    },
+                    "underAgency": { "title": "underAgency", "type": "string" },
+                    "agencyName": { "title": "agencyName", "type": "string" }
+                  },
+                  "required": []
+                }
+              }
+            }
+          },
+          "employmentPerformanceDetails": {
+            "title": "employmentPerformanceDetails",
+            "type": "object",
+            "description": "Employment Performance Details",
+            "properties": {
+              "employmentPerformance": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "companyName": { "title": "companyName", "type": "string" },
+                    "position": { "title": "position", "type": "string" },
+                    "supervisorFirstName": {
+                      "title": "supervisorFirstName",
+                      "type": "string"
+                    },
+                    "supervisorMiddleName": {
+                      "title": "supervisorMiddleName",
+                      "type": "string"
+                    },
+                    "supervisorLastName": {
+                      "title": "supervisorLastName",
+                      "type": "string"
+                    },
+                    "supervisorPosition": {
+                      "title": "supervisorPosition",
+                      "type": "string"
+                    },
+                    "supervisorEmail": {
+                      "title": "supervisorEmail",
+                      "type": "string"
+                    },
+                    "addressLine1": {
+                      "title": "addressLine1",
+                      "type": "string"
+                    },
+                    "addressLine2": {
+                      "title": "addressLine2",
+                      "type": "string"
+                    },
+                    "postalCode": { "title": "postalCode", "type": "string" },
+                    "stateRegion": { "title": "stateRegion", "type": "string" },
+                    "city": { "title": "city", "type": "string" },
+                    "country": { "title": "country", "type": "string" },
+                    "contactNo": { "title": "contactNo", "type": "string" },
+                    "isCurrent": { "title": "isCurrent", "type": "string" },
+                    "canCommunicate": {
+                      "title": "canCommunicate",
+                      "type": "string"
+                    },
+                    "whenToContact": {
+                      "title": "whenToContact",
+                      "type": "string"
+                    },
+                    "referenceRelationship": {
+                      "title": "referenceRelationship",
+                      "type": "string"
+                    },
+                    "bestTimeToCall": {
+                      "title": "bestTimeToCall",
+                      "type": "string"
+                    }
+                  },
+                  "required": []
+                }
+              }
+            }
+          },
+          "professionalQualificationDetails": {
+            "title": "professionalQualificationDetails",
+            "type": "object",
+            "description": "Professional Qualification Details",
+            "properties": {
+              "professionalQualification": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "certificateIssuingAuthority": {
+                      "title": "certificateIssuingAuthority",
+                      "type": "string"
+                    },
+                    "qualificationAttained": {
+                      "title": "qualificationAttained",
+                      "type": "string"
+                    },
+                    "certificateNumber": {
+                      "title": "certificateNumber",
+                      "type": "string"
+                    },
+                    "dateGranted": { "title": "dateGranted", "type": "string" },
+                    "country": { "title": "country", "type": "string" }
+                  },
+                  "required": []
+                }
+              }
+            }
+          }
+        },
+        "required": []
+      },
+      "credentialSchema": {
+        "type": "object",
+        "required": ["id", "type"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uri"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "B": {
+    "@context": {
+      "AHCVitalAggregate": {
+        "@id": "https://schema.affinidi.io/personalInformationV1R0.jsonld",
+        "@context": {
+          "@version": 1.1,
+          "@protected": true
+        }
+      },
+
+      "personalInformation": {
+        "@id": "schema-id:personalInformation",
+        "@context": {
+          "positionApplied": {
+            "@id": "schema-id:positionApplied",
+            "@type": "https://schema.org/Text"
+          },
+          "firstName": {
+            "@id": "schema-id:firstName",
+            "@type": "https://schema.org/Text"
+          },
+          "middleName": {
+            "@id": "schema-id:middleName",
+            "@type": "https://schema.org/Text"
+          },
+          "lastName": {
+            "@id": "schema-id:lastName",
+            "@type": "https://schema.org/Text"
+          },
+          "aka": {
+            "@id": "schema-id:aka",
+            "@type": "https://schema.org/Text"
+          },
+          "email": {
+            "@id": "schema-id:email",
+            "@type": "https://schema.org/Text"
+          },
+          "phoneNo": {
+            "@id": "schema-id:phoneNo",
+            "@type": "https://schema.org/Text"
+          },
+          "alterPhoneNo": {
+            "@id": "schema-id:alterPhoneNo",
+            "@type": "https://schema.org/Text"
+          },
+          "civilStatus": {
+            "@id": "schema-id:civilStatus",
+            "@type": "https://schema.org/Text"
+          },
+          "gender": {
+            "@id": "schema-id:gender",
+            "@type": "https://schema.org/Text"
+          },
+          "primaryIdCard": {
+            "@id": "schema-id:primaryIdCard",
+            "@type": "https://schema.org/Text"
+          },
+          "primaryIdCardNo": {
+            "@id": "schema-id:primaryIdCardNo",
+            "@type": "https://schema.org/Text"
+          },
+          "primaryIdCard2": {
+            "@id": "schema-id:primaryIdCard2",
+            "@type": "https://schema.org/Text"
+          },
+          "primaryIdCardNo2": {
+            "@id": "schema-id:primaryIdCardNo2",
+            "@type": "https://schema.org/Text"
+          },
+          "photo": {
+            "@id": "schema-id:photo",
+            "@type": "https://schema.org/URL"
+          },
+          "notes": {
+            "@id": "schema-id:notes",
+            "@type": "https://schema.org/Text"
+          }
+        }
+      },
+      "addressDetails": {
+        "@id": "schema-id:addressDetails",
+        "@context": {
+          "address": {
+            "@id": "schema-id:address",
+            "@context": {
+              "addressLine1": {
+                "@id": "schema-id:addressLine1",
+                "@type": "https://schema.org/Text"
+              },
+              "addressLine2": {
+                "@id": "schema-id:addressLine2",
+                "@type": "https://schema.org/Text"
+              },
+              "city": {
+                "@id": "schema-id:city",
+                "@type": "https://schema.org/Text"
+              },
+              "stateOrRegion": {
+                "@id": "schema-id:stateOrRegion",
+                "@type": "https://schema.org/Text"
+              },
+              "postalCode": {
+                "@id": "schema-id:postalCode",
+                "@type": "https://schema.org/Text"
+              },
+              "country": {
+                "@id": "schema-id:country",
+                "@type": "https://schema.org/Text"
+              },
+              "stayDateFrom": {
+                "@id": "schema-id:stayDateFrom",
+                "@type": "https://schema.org/Text"
+              },
+              "stayDateTo": {
+                "@id": "schema-id:stayDateTo",
+                "@type": "https://schema.org/Text"
+              },
+              "houseOwnerName": {
+                "@id": "schema-id:houseOwnerName",
+                "@type": "https://schema.org/Text"
+              },
+              "houseOwnerContactNo": {
+                "@id": "schema-id:houseOwnerContactNo",
+                "@type": "https://schema.org/Text"
+              },
+              "houseOwnerEmail": {
+                "@id": "schema-id:houseOwnerEmail",
+                "@type": "https://schema.org/Text"
+              },
+              "neighborName": {
+                "@id": "schema-id:neighborName",
+                "@type": "https://schema.org/Text"
+              },
+              "neighborContactNo": {
+                "@id": "schema-id:neighborContactNo",
+                "@type": "https://schema.org/Text"
+              },
+              "neighborEmail": {
+                "@id": "schema-id:neighborEmail",
+                "@type": "https://schema.org/Text"
+              }
+            }
+          }
+        }
+      },
+      "educationDetails": {
+        "@id": "schema-id:educationDetails",
+        "@context": {
+          "education": {
+            "@id": "schema-id:education",
+            "@context": {
+              "institutionName": {
+                "@id": "schema-id:institutionName",
+                "@type": "https://schema.org/Text"
+              },
+              "institutionContactNo": {
+                "@id": "schema-id:institutionContactNo",
+                "@type": "https://schema.org/Text"
+              },
+              "institutionEmail": {
+                "@id": "schema-id:institutionEmail",
+                "@type": "https://schema.org/Text"
+              },
+              "isGraduated": {
+                "@id": "schema-id:isGraduated",
+                "@type": "https://schema.org/Text"
+              },
+              "dateFrom": {
+                "@id": "schema-id:dateFrom",
+                "@type": "https://schema.org/Text"
+              },
+              "dateTo": {
+                "@id": "schema-id:dateTo",
+                "@type": "https://schema.org/Text"
+              },
+              "dateGraduated": {
+                "@id": "schema-id:dateGraduated",
+                "@type": "https://schema.org/Text"
+              },
+              "modeOfStudy": {
+                "@id": "schema-id:modeOfStudy",
+                "@type": "https://schema.org/Text"
+              },
+              "addressLine1": {
+                "@id": "schema-id:addressLine1",
+                "@type": "https://schema.org/Text"
+              },
+              "addressLine2": {
+                "@id": "schema-id:addressLine2",
+                "@type": "https://schema.org/Text"
+              },
+              "postalCode": {
+                "@id": "schema-id:postalCode",
+                "@type": "https://schema.org/Text"
+              },
+              "stateRegion": {
+                "@id": "schema-id:stateRegion",
+                "@type": "https://schema.org/Text"
+              },
+              "city": {
+                "@id": "schema-id:city",
+                "@type": "https://schema.org/Text"
+              }
+            }
+          }
+        }
+      },
+      "employmentDetails": {
+        "@id": "schema-id:employmentDetails",
+        "@context": {
+          "employment": {
+            "@id": "schema-id:employment",
+            "@context": {
+              "companyName": {
+                "@id": "schema-id:companyName",
+                "@type": "https://schema.org/Text"
+              },
+              "position": {
+                "@id": "schema-id:position",
+                "@type": "https://schema.org/Text"
+              },
+              "employmentStatus": {
+                "@id": "schema-id:employmentStatus",
+                "@type": "https://schema.org/Text"
+              },
+              "annualSalary": {
+                "@id": "schema-id:annualSalary",
+                "@type": "https://schema.org/Text"
+              },
+              "salaryCurrency": {
+                "@id": "schema-id:salaryCurrency",
+                "@type": "https://schema.org/Text"
+              },
+              "isCurrent": {
+                "@id": "schema-id:isCurrent",
+                "@type": "https://schema.org/Text"
+              },
+              "whenToContact": {
+                "@id": "schema-id:whenToContact",
+                "@type": "https://schema.org/Text"
+              },
+              "canCommunicate": {
+                "@id": "schema-id:canCommunicate",
+                "@type": "https://schema.org/Text"
+              },
+              "dateFrom": {
+                "@id": "schema-id:dateFrom",
+                "@type": "https://schema.org/Text"
+              },
+              "dateTo": {
+                "@id": "schema-id:dateTo",
+                "@type": "https://schema.org/Text"
+              },
+              "reasonForLeaving": {
+                "@id": "schema-id:reasonForLeaving",
+                "@type": "https://schema.org/Text"
+              },
+              "companyEmail": {
+                "@id": "schema-id:companyEmail",
+                "@type": "https://schema.org/Text"
+              },
+              "addressLine1": {
+                "@id": "schema-id:addressLine1",
+                "@type": "https://schema.org/Text"
+              },
+              "addressLine2": {
+                "@id": "schema-id:addressLine2",
+                "@type": "https://schema.org/Text"
+              },
+              "postalCode": {
+                "@id": "schema-id:postalCode",
+                "@type": "https://schema.org/Text"
+              },
+              "stateRegion": {
+                "@id": "schema-id:stateRegion",
+                "@type": "https://schema.org/Text"
+              },
+              "city": {
+                "@id": "schema-id:city",
+                "@type": "https://schema.org/Text"
+              },
+              "country": {
+                "@id": "schema-id:country",
+                "@type": "https://schema.org/Text"
+              },
+              "hr_first_name": {
+                "@id": "schema-id:hr_first_name",
+                "@type": "https://schema.org/Text"
+              },
+              "hr_last_name": {
+                "@id": "schema-id:hr_last_name",
+                "@type": "https://schema.org/Text"
+              },
+              "hr_email": {
+                "@id": "schema-id:hr_email",
+                "@type": "https://schema.org/Text"
+              },
+              "hr_contact_no": {
+                "@id": "schema-id:hr_contact_no",
+                "@type": "https://schema.org/Text"
+              },
+              "hr_personnel_position": {
+                "@id": "schema-id:hr_personnel_position",
+                "@type": "https://schema.org/Text"
+              },
+              "eligibleForRehire": {
+                "@id": "schema-id:eligibleForRehire",
+                "@type": "https://schema.org/Text"
+              },
+              "underAgency": {
+                "@id": "schema-id:underAgency",
+                "@type": "https://schema.org/Text"
+              },
+              "agencyName": {
+                "@id": "schema-id:agencyName",
+                "@type": "https://schema.org/Text"
+              }
+            }
+          }
+        }
+      },
+      "employmentPerformanceDetails": {
+        "@id": "schema-id:employmentPerformanceDetails",
+        "@context": {
+          "employmentPerformance": {
+            "@id": "schema-id:employmentPerformance",
+            "@context": {
+              "companyName": {
+                "@id": "schema-id:companyName",
+                "@type": "https://schema.org/Text"
+              },
+              "position": {
+                "@id": "schema-id:position",
+                "@type": "https://schema.org/Text"
+              },
+              "supervisorFirstName": {
+                "@id": "schema-id:supervisorFirstName",
+                "@type": "https://schema.org/Text"
+              },
+              "supervisorMiddleName": {
+                "@id": "schema-id:supervisorMiddleName",
+                "@type": "https://schema.org/Text"
+              },
+              "supervisorLastName": {
+                "@id": "schema-id:supervisorLastName",
+                "@type": "https://schema.org/Text"
+              },
+              "supervisorPosition": {
+                "@id": "schema-id:supervisorPosition",
+                "@type": "https://schema.org/Text"
+              },
+              "supervisorEmail": {
+                "@id": "schema-id:supervisorEmail",
+                "@type": "https://schema.org/Text"
+              },
+              "addressLine1": {
+                "@id": "schema-id:addressLine1",
+                "@type": "https://schema.org/Text"
+              },
+              "addressLine2": {
+                "@id": "schema-id:addressLine2",
+                "@type": "https://schema.org/Text"
+              },
+              "postalCode": {
+                "@id": "schema-id:postalCode",
+                "@type": "https://schema.org/Text"
+              },
+              "stateRegion": {
+                "@id": "schema-id:stateRegion",
+                "@type": "https://schema.org/Text"
+              },
+              "city": {
+                "@id": "schema-id:city",
+                "@type": "https://schema.org/Text"
+              },
+              "country": {
+                "@id": "schema-id:country",
+                "@type": "https://schema.org/Text"
+              },
+              "contactNo": {
+                "@id": "schema-id:contactNo",
+                "@type": "https://schema.org/Text"
+              },
+              "isCurrent": {
+                "@id": "schema-id:isCurrent",
+                "@type": "https://schema.org/Text"
+              },
+              "canCommunicate": {
+                "@id": "schema-id:canCommunicate",
+                "@type": "https://schema.org/Text"
+              },
+              "whenToContact": {
+                "@id": "schema-id:whenToContact",
+                "@type": "https://schema.org/Text"
+              },
+              "referenceRelationship": {
+                "@id": "schema-id:referenceRelationship",
+                "@type": "https://schema.org/Text"
+              },
+              "bestTimeToCall": {
+                "@id": "schema-id:bestTimeToCall",
+                "@type": "https://schema.org/Text"
+              }
+            }
+          }
+        }
+      },
+      "professionalQualificationDetails": {
+        "@id": "schema-id:professionalQualificationDetails",
+        "@context": {
+          "professionalQualification": {
+            "@id": "schema-id:professionalQualification",
+            "@context": {
+              "certificateIssuingAuthority": {
+                "@id": "schema-id:certificateIssuingAuthority",
+                "@type": "https://schema.org/Text"
+              },
+              "qualificationAttained": {
+                "@id": "schema-id:qualificationAttained",
+                "@type": "https://schema.org/Text"
+              },
+              "certificateNumber": {
+                "@id": "schema-id:certificateNumber",
+                "@type": "https://schema.org/Text"
+              },
+              "dateGranted": {
+                "@id": "schema-id:dateGranted",
+                "@type": "https://schema.org/Text"
+              },
+              "country": {
+                "@id": "schema-id:country",
+                "@type": "https://schema.org/Text"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
