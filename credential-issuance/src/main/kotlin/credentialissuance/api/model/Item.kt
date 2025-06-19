@@ -7,9 +7,9 @@ import kotlinx.serialization.json.JsonObject
 data class Item(
         val uuid: String, // Client-provided unique identifier
         val name: String,
-        val did: String,
-        val requestTime: String,
+        val did: String? = null,
+        val requestTime: String? = null,
         val responseTime: String?,
-        val requestStatus: String,
+        val requestStatus: String? = null,
         val payloadDto: JsonObject? = null
 )
