@@ -54,12 +54,12 @@ class DataController(private val dataService: DataService) {
         }
     }
 
-    @PutMapping("/did/{did}")
+    @PutMapping("/uuid/{uuid}")
     fun updateData(
-            @PathVariable did: String,
+            @PathVariable uuid: String,
             @RequestBody itemUpdate: UpdateItemRequest
     ): Mono<ResponseEntity<Item>> {
-        return Mono.fromCallable { dataService.updateItem(did, itemUpdate) }.flatMap { updatedItem
+        return Mono.fromCallable { dataService.updateItem(uuid, itemUpdate) }.flatMap { updatedItem
             ->
             if (updatedItem != null) {
                 Mono.just(ResponseEntity.ok(updatedItem))
