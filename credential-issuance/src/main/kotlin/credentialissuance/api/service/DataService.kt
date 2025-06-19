@@ -3,6 +3,7 @@ package credentialissuance.api.service // Adjust package as needed
 import credentialissuance.api.model.Item
 import jakarta.annotation.PostConstruct
 import java.io.File
+import java.time.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -24,13 +25,13 @@ class DataService {
 
     @Serializable
     data class UpdateItemRequest(
-            // All fields are optional for update. Client sends only what they want to change.
+            // did and payloadDto are now mandatory for an update.
+            // uuid is used as the path identifier, not in the body for this update.
+            val did: String,
+            val payloadDto: JsonObject,
             val name: String? = null,
-            val did: String? = null, // If client wants to update the DID
             val requestTime: String? = null,
-            val responseTime: String? = null,
-            val requestStatus: String? = null,
-            val payloadDto: JsonObject? = null // Can be explicitly set to null to clear it
+            val requestStatus: String? = null
     )
 
     private val dataFilePath = "data/local_db.json" // Store in a 'data' subdirectory
@@ -117,37 +118,33 @@ class DataService {
         return newItem
     }
 
-    fun updateItem(did: String, updateRequest: UpdateItemRequest): Item? {
-        // The 'did' in the path identifies the item to update.
+    fun updateItem(uuid: String, updateRequest: UpdateItemRequest): Item? {
+        // The 'uuid' in the path identifies the item to update.
         val items = getAllItems().toMutableList()
-        val index = items.indexOfFirst { it.did == did }
+        val index = items.indexOfFirst { it.uuid == uuid }
 
         return if (index != -1) {
             val existingItem = items[index]
 
-            // If the request includes a new DID, check its uniqueness (if it's different from the
-            // current one)
-            updateRequest.did?.let { newDid ->
-                if (newDid != existingItem.did && getItemByDid(newDid) != null) {
-                    println("Error: Another item with the new DID $newDid already exists.")
-                    return null
-                }
+            // If the new DID in the request is different from the existing item's DID,
+            // check uniqueness for the new DID.
+            if (updateRequest.did != existingItem.did && getItemByDid(updateRequest.did) != null) {
+                println("Error: Another item with the new DID ${updateRequest.did} already exists.")
+                return null
             }
 
             val updatedItem =
                     items[index].copy(
                             name = updateRequest.name
                                             ?: existingItem.name, // Keep existing if not provided
-                            did = updateRequest.did ?: existingItem.did,
+                            // did and payloadDto are now mandatory in UpdateItemRequest
+                            did = updateRequest.did,
+                            payloadDto = updateRequest.payloadDto,
                             requestTime = updateRequest.requestTime ?: existingItem.requestTime,
-                            responseTime = updateRequest.responseTime
-                                            ?: existingItem
-                                                    .responseTime, // Allows setting responseTime to
-                            // null if explicitly passed as
-                            // null
+                            // Automatically set responseTime to current time
+                            responseTime = Instant.now().toString(),
                             requestStatus = updateRequest.requestStatus
                                             ?: existingItem.requestStatus,
-                            payloadDto = updateRequest.payloadDto ?: existingItem.payloadDto
                     )
             items[index] = updatedItem
             saveItems(items)
