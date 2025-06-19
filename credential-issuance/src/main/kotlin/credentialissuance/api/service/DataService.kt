@@ -3,15 +3,33 @@ package credentialissuance.api.service // Adjust package as needed
 import credentialissuance.api.model.Item
 import jakarta.annotation.PostConstruct
 import java.io.File
-import java.nio.file.Paths
-import java.util.UUID
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
 import org.springframework.stereotype.Service
 
 @Service
 class DataService {
+
+    @Serializable
+    data class CreateItemRequest(
+            val name: String,
+            val did: String,
+            val uuid: String, // Client-provided UUID
+            val requestTime: String,
+            val requestStatus: String,
+            val payloadDto: JsonObject? = null // Remains optional
+    )
+
+    @Serializable
+    data class UpdateItemRequest(
+            val name: String,
+            val requestTime: String,
+            val responseTime: String?,
+            val requestStatus: String,
+            val payloadDto: JsonObject? = null
+    )
 
     private val dataFilePath = "data/local_db.json" // Store in a 'data' subdirectory
     private lateinit var dataFile: File
@@ -26,7 +44,7 @@ class DataService {
     @PostConstruct
     fun init() {
         val projectDir = System.getProperty("user.dir")
-        val fullPath = Paths.get(projectDir, dataFilePath)
+        val fullPath = java.nio.file.Paths.get(projectDir, dataFilePath)
         dataFile = fullPath.toFile()
 
         // Create directory and file if they don't exist
@@ -52,29 +70,64 @@ class DataService {
         }
     }
 
-    fun getItemById(id: String): Item? {
-        return getAllItems().find { it.id == id }
+    fun getItemByDid(did: String): Item? {
+        return getAllItems().find { it.did == did }
     }
 
-    fun addItem(itemRequest: OmitIdItem): Item {
+    fun getItemsByName(name: String): List<Item> {
+        return getAllItems().filter { it.name.equals(name, ignoreCase = true) }
+    }
+
+    fun getItemByUuid(uuid: String): Item? {
+        return getAllItems().find { it.uuid == uuid }
+    }
+
+    fun addItem(itemRequest: CreateItemRequest): Item? {
+        // Check for DID uniqueness
+        if (getItemByDid(itemRequest.did) != null) {
+            // Or throw a custom exception, e.g., DuplicateDidException
+            println("Error: Item with DID ${itemRequest.did} already exists.")
+            return null
+        }
+
+        // Check for UUID uniqueness
+        if (getItemByUuid(itemRequest.uuid) != null) {
+            println("Error: Item with UUID ${itemRequest.uuid} already exists.")
+            return null
+        }
+
         val items = getAllItems().toMutableList()
         val newItem =
                 Item(
-                        id = UUID.randomUUID().toString(), // Generate a unique ID
+                        uuid = itemRequest.uuid,
                         name = itemRequest.name,
-                        description = itemRequest.description
+                        did = itemRequest.did,
+                        requestTime = itemRequest.requestTime,
+                        responseTime =
+                                null, // responseTime is typically set later, so null on creation
+                        requestStatus = itemRequest.requestStatus,
+                        payloadDto = itemRequest.payloadDto
                 )
         items.add(newItem)
         saveItems(items)
         return newItem
     }
 
-    fun updateItem(id: String, itemUpdate: OmitIdItem): Item? {
+    fun updateItem(did: String, updateRequest: UpdateItemRequest): Item? {
         val items = getAllItems().toMutableList()
-        val index = items.indexOfFirst { it.id == id }
+        val index = items.indexOfFirst { it.did == did }
         return if (index != -1) {
             val updatedItem =
-                    items[index].copy(name = itemUpdate.name, description = itemUpdate.description)
+                    items[index].copy(
+                            name = updateRequest.name,
+                            requestTime = updateRequest.requestTime,
+                            responseTime = updateRequest.responseTime,
+                            requestStatus = updateRequest.requestStatus,
+                            payloadDto = updateRequest.payloadDto
+                                            ?: items[index]
+                                                    .payloadDto // Keep existing if not provided in
+                            // update
+                            )
             items[index] = updatedItem
             saveItems(items)
             updatedItem
@@ -83,9 +136,9 @@ class DataService {
         }
     }
 
-    fun deleteItem(id: String): Boolean {
+    fun deleteItem(did: String): Boolean {
         val items = getAllItems().toMutableList()
-        val removed = items.removeIf { it.id == id }
+        val removed = items.removeIf { it.did == did }
         if (removed) {
             saveItems(items)
         }
@@ -101,7 +154,3 @@ class DataService {
         }
     }
 }
-
-// Helper data class for POST/PUT requests where ID is auto-generated or path-provided
-// Consider moving to a dto package like credentialissuance.api.dto if you have many DTOs
-@Serializable data class OmitIdItem(val name: String, val description: String? = null)
