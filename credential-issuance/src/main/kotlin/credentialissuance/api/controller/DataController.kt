@@ -59,12 +59,17 @@ class DataController(private val dataService: DataService) {
             @PathVariable uuid: String,
             @RequestBody itemUpdate: UpdateItemRequest
     ): Mono<ResponseEntity<Item>> {
-        return Mono.fromCallable { dataService.updateItem(uuid, itemUpdate) }.flatMap { updatedItem
-            ->
-            if (updatedItem != null) {
-                Mono.just(ResponseEntity.ok(updatedItem))
+        return Mono.fromCallable { dataService.updateItem(uuid, itemUpdate) }.flatMap { result ->
+            if (result != null) {
+                val (item, created) = result
+                if (created) {
+                    Mono.just(ResponseEntity.status(HttpStatus.CREATED).body(item))
+                } else {
+                    Mono.just(ResponseEntity.ok(item))
+                }
             } else {
-                Mono.just(ResponseEntity.notFound().build<Item>())
+                // This now means a conflict (e.g., duplicate DID), not "not found"
+                Mono.just(ResponseEntity.status(HttpStatus.CONFLICT).build<Item>())
             }
         }
     }

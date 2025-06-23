@@ -25,8 +25,7 @@ class DataService {
 
     @Serializable
     data class UpdateItemRequest(
-            // did and payloadDto are now mandatory for an update.
-            // uuid is used as the path identifier, not in the body for this update.
+            val uuid: String, // UUID is mandatory for updates
             val did: String,
             val payloadDto: JsonObject,
             val name: String? = null,
@@ -118,12 +117,19 @@ class DataService {
         return newItem
     }
 
-    fun updateItem(uuid: String, updateRequest: UpdateItemRequest): Item? {
+    /**
+     * Updates an item if it exists, or creates it if it does not (upsert).
+     * @return A Pair containing the resulting Item and a Boolean which is 'true' if the item was
+     * created, and 'false' if it was updated. Returns null if there is a conflict (e.g., duplicate
+     * DID).
+     */
+    fun updateItem(uuid: String, updateRequest: UpdateItemRequest): Pair<Item, Boolean>? {
         // The 'uuid' in the path identifies the item to update.
         val items = getAllItems().toMutableList()
         val index = items.indexOfFirst { it.uuid == uuid }
 
-        return if (index != -1) {
+        if (index != -1) {
+            // UPDATE logic
             val existingItem = items[index]
 
             // If the new DID in the request is different from the existing item's DID,
@@ -134,23 +140,43 @@ class DataService {
             }
 
             val updatedItem =
-                    items[index].copy(
+                    existingItem.copy(
                             name = updateRequest.name
                                             ?: existingItem.name, // Keep existing if not provided
-                            // did and payloadDto are now mandatory in UpdateItemRequest
                             did = updateRequest.did,
                             payloadDto = updateRequest.payloadDto,
                             requestTime = updateRequest.requestTime ?: existingItem.requestTime,
-                            // Automatically set responseTime to current time
-                            responseTime = Instant.now().toString(),
+                            responseTime =
+                                    Instant.now().toString(), // Automatically set responseTime to
+                            // current time
                             requestStatus = updateRequest.requestStatus
                                             ?: existingItem.requestStatus,
                     )
             items[index] = updatedItem
             saveItems(items)
-            updatedItem
+            return Pair(updatedItem, false) // false indicates an update
         } else {
-            null
+            // INSERT logic (Upsert)
+            if (getItemByDid(updateRequest.did) != null) {
+                println("Error: Another item with the new DID ${updateRequest.did} already exists.")
+                return null
+            }
+
+            val newItem =
+                    Item(
+                            uuid = uuid,
+                            name = updateRequest.name
+                                            ?: uuid, // Default name to uuid if not provided
+                            did = updateRequest.did,
+                            requestTime = updateRequest.requestTime,
+                            responseTime =
+                                    Instant.now().toString(), // Set response time on creation
+                            requestStatus = updateRequest.requestStatus,
+                            payloadDto = updateRequest.payloadDto
+                    )
+            items.add(newItem)
+            saveItems(items)
+            return Pair(newItem, true) // true indicates a creation
         }
     }
 
