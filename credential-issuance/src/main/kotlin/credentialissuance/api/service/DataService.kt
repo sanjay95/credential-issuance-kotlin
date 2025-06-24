@@ -25,7 +25,6 @@ class DataService {
 
     @Serializable
     data class UpdateItemRequest(
-            val uuid: String, // UUID is mandatory for updates
             val did: String,
             val payloadDto: JsonObject,
             val name: String? = null,
@@ -166,7 +165,7 @@ class DataService {
                     Item(
                             uuid = uuid,
                             name = updateRequest.name
-                                            ?: uuid, // Default name to uuid if not provided
+                                            ?: "NA", // Default name to "NA" if not provided
                             did = updateRequest.did,
                             requestTime = updateRequest.requestTime,
                             responseTime =
