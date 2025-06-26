@@ -1,7 +1,6 @@
 package credentialissuance.api.model
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonObject
 
 @Serializable
 data class Item(
@@ -11,5 +10,5 @@ data class Item(
         val requestTime: String? = null,
         val responseTime: String?,
         val requestStatus: String? = null,
-        val payloadDto: JsonObject? = null
+        val payloadDto: Map<String, String>? = null
 )
