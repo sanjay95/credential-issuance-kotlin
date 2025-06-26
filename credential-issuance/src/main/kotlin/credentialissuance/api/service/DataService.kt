@@ -7,7 +7,6 @@ import java.time.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
 import org.springframework.stereotype.Service
 
 @Service
@@ -20,13 +19,13 @@ class DataService {
             val did: String? = null,
             val requestTime: String? = null,
             val requestStatus: String? = null,
-            val payloadDto: JsonObject? = null // Remains optional
+            val payloadDto: Map<String, String>? = null
     )
 
     @Serializable
     data class UpdateItemRequest(
             val did: String,
-            val payloadDto: JsonObject,
+            val payloadDto: Map<String, String>? = null,
             val name: String? = null,
             val requestTime: String? = null,
             val requestStatus: String? = null
