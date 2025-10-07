@@ -130,12 +130,14 @@ class DataService {
             // UPDATE logic
             val existingItem = items[index]
 
-            // If the new DID in the request is different from the existing item's DID,
-            // check uniqueness for the new DID.
-            if (updateRequest.did != existingItem.did && getItemByDid(updateRequest.did) != null) {
-                println("Error: Another item with the new DID ${updateRequest.did} already exists.")
-                return null
-            }
+            // // If the new DID in the request is different from the existing item's DID,
+            // // check uniqueness for the new DID.
+            // if (updateRequest.did != existingItem.did && getItemByDid(updateRequest.did) != null)
+            // {
+            //     println("Error: Another item with the new DID ${updateRequest.did} already
+            // exists.")
+            //     return null
+            // }
 
             val updatedItem =
                     existingItem.copy(
@@ -178,11 +180,11 @@ class DataService {
         }
     }
 
-    fun deleteItem(did: String): Boolean { // 'did' here is the identifier for deletion
-        // If 'did' in Item model can be null, this method might need adjustment
-        // or we assume we only delete items that have a non-null DID.
+    fun deleteItem(uuid: String): Boolean { // 'uuid' here is the identifier for deletion
+        // If 'uuid' in Item model can be null, this method might need adjustment
+        // or we assume we only delete items that have a non-null UUID.
         val items = getAllItems().toMutableList()
-        val removed = items.removeIf { it.did == did }
+        val removed = items.removeIf { it.uuid == uuid }
         if (removed) {
             saveItems(items)
         }

@@ -74,9 +74,9 @@ class DataController(private val dataService: DataService) {
         }
     }
 
-    @DeleteMapping("/did/{did}")
-    fun deleteData(@PathVariable did: String): Mono<ResponseEntity<Void>> {
-        return Mono.fromCallable { dataService.deleteItem(did) }.map { deleted ->
+    @DeleteMapping("/uuid/{uuid}")
+    fun deleteData(@PathVariable uuid: String): Mono<ResponseEntity<Void>> {
+        return Mono.fromCallable { dataService.deleteItem(uuid) }.map { deleted ->
             if (deleted) {
                 ResponseEntity.noContent().build<Void>()
             } else {
