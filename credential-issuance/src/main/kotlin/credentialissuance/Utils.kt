@@ -109,12 +109,9 @@ class IssuanceService() {
         }
 
         private fun buildClaimLinkWithRedirect(credentialOfferUri: String): String {
-                var webVaultUrl = dotenv["VAULT_URL"]!!
-                val redirectUri = dotenv["REDIRECT_URI"]!!
-                if (!credentialOfferUri.equals("") &&
-                                !webVaultUrl.equals("") &&
-                                !redirectUri.equals("")
-                ) {
+                val webVaultUrl = dotenv["VAULT_URL"] ?: ""
+                val redirectUri = dotenv["REDIRECT_URI"] ?: ""
+                if (!credentialOfferUri.equals("") && !webVaultUrl.equals("")) {
                         var claimURL: String =
                                 UriComponentsBuilder.fromUriString(webVaultUrl)
                                         .queryParam(
@@ -124,13 +121,18 @@ class IssuanceService() {
                                                         StandardCharsets.UTF_8.toString()
                                                 )
                                         )
-                                        .queryParam(
-                                                "return_uri",
-                                                URLEncoder.encode(
-                                                        redirectUri,
-                                                        StandardCharsets.UTF_8.toString()
-                                                )
-                                        )
+                                        .apply {
+                                                if (!redirectUri.isNullOrEmpty()) {
+                                                        queryParam(
+                                                                "return_uri",
+                                                                URLEncoder.encode(
+                                                                        redirectUri,
+                                                                        StandardCharsets.UTF_8
+                                                                                .toString()
+                                                                )
+                                                        )
+                                                }
+                                        }
                                         .build()
                                         .toUriString()
 
